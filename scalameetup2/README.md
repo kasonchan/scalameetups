@@ -1,7 +1,7 @@
 # Scala Scripting, ScalaStyle and Scalafmt
 
 We can run/write Scala code in many different ways:
-As we mentioned in [Intro to Scala &#65120; SBT](https://github.com/kasonchan/scalameetups/blob/master/scalameetup1/meetup1.md), we can use Scala REPL.
+As we mentioned in [Intro to Scala &#65120; SBT](https://github.com/kasonchan/scalameetups/blob/master/scalameetup1/README.md), we can use Scala REPL.
 You can also try using some online playground to run Scala code directly on your browser such as https://scalafiddle.io/ and https://scastie.scala-lang.org/.
 
 For the following part of the notes, we will need `Scala` installed on your machine:
