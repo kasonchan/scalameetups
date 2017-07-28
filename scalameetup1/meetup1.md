@@ -1,4 +1,4 @@
-# Into to Scala and SBT
+# Into to Scala &#65120; SBT
 
 ## Scala
 
@@ -153,8 +153,10 @@ scalaVersion := "${SCALA_VERSION}"" > build.sbt
 ```
 
 For Intellij IDEA user, create a new project by select Scala > SBT and click Next:
+![SelectSBT](https://github.com/kasonchan/scalameetups/blob/scalameetup1/scalameetup1/images/SelectSBT.png)
 
 Enter the project name scalameetup1 and click OK and you will have a project like this.
+![scalameetup1](https://github.com/kasonchan/scalameetups/blob/scalameetup1/scalameetup1/images/scalameetup1.png)
 
 We will have similar structure:
 ```bash
@@ -263,7 +265,7 @@ Some(Tag(e2,Expense 2,Group,Expense,Context(User(123,Kason),Company,7/21)))
 Some(Tag(e3,Expense 3,Group,Expense,Context(User(123,Kason),Company,7/21)))
 ```
 
-Incremental compilation by adding ~ in front of run sbt ~run. This allows auto compilation and execute of your code change every time you edit and save the project.
+Incremental compilation by adding `~` in front of run `sbt ~run`. This allows auto compilation and execute of your code change every time you edit and save the project.
 
 ## Comprehensive references to Scala libraries
 
