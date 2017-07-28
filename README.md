@@ -9,8 +9,8 @@ Everybody are encouraged to share and give a talk.
 These documents should be easily follow and test and try them out.
 
 - Language Basics
-  - [Intro to Scala &#65120; SBT](https://github.com/kasonchan/scalameetups/blob/scalameetup1/scalameetup1/meetup1.md)
-  - Scala Scripting, and ScalaStyle
+  - [Intro to Scala &#65120; SBT](https://github.com/kasonchan/scalameetups/blob/scalameetup1/scalameetup1/README.md)
+  - [Scala Scripting, ScalaStyle and Scalafmt](https://github.com/kasonchan/scalameetups/blob/scalameetup2/scalameetup2/README.md)
 - Akka
 - Spark
 - Web App
