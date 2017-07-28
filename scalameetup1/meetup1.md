@@ -1,4 +1,4 @@
-# Into to Scala and SBT
+# Into to Scala &#65120; SBT
 
 ## Scala
 
