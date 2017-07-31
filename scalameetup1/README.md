@@ -204,7 +204,7 @@ session. Data will be read from this file.
 <details>
   <summary>tags.txt</summary
 
-```scala
+```
 cc1,Cost Center,Group,Cost Center,123,Kason,Company,7/21
 er1,Expense Report,Group,Expense Report,123,Kason,Company,3/21
 e1,Expense 1,Group,Expense,123,Kason,Company,6/21
