@@ -201,23 +201,19 @@ scalameetup1
 Create a `resources` directory on your root directory of your project. Create a 
 file called `tags.txt` in this resources directory. We will need it for this 
 session. Data will be read from this file.
-<details>
-  <summary>tags.txt</summary
 
-<pre>
-  cc1,Cost Center,Group,Cost Center,123,Kason,Company,7/21
-  er1,Expense Report,Group,Expense Report,123,Kason,Company,3/21
-  e1,Expense 1,Group,Expense,123,Kason,Company,6/21
-  e2,Expense 2,Group,Expense,123,Kason,Company,7/21
-  e3,Expense 3,Group,Expense,123,Kason,Company,7/21
-  cc1,Cost Center,Group,Cost Center,123,Alice,Company,8/20
-  er1,Expense Report,Group,Expense Report,123,Alice,Company,5/21
-  e1,Expense 1,Group,Expense,123,Alice,Company,6/21
-  e2,Expense 2,Group,Expense,123,Alice,Company,8/20
-  e3,Expense 3,Group,Expense,123,Alice,Company,8/20
-</pre>
-
-</details>
+```text
+cc1,Cost Center,Group,Cost Center,123,Kason,Company,7/21
+er1,Expense Report,Group,Expense Report,123,Kason,Company,3/21
+e1,Expense 1,Group,Expense,123,Kason,Company,6/21
+e2,Expense 2,Group,Expense,123,Kason,Company,7/21
+e3,Expense 3,Group,Expense,123,Kason,Company,7/21
+cc1,Cost Center,Group,Cost Center,123,Alice,Company,8/20
+er1,Expense Report,Group,Expense Report,123,Alice,Company,5/21
+e1,Expense 1,Group,Expense,123,Alice,Company,6/21
+e2,Expense 2,Group,Expense,123,Alice,Company,8/20
+e3,Expense 3,Group,Expense,123,Alice,Company,8/20
+```
 
 Create a `TagsDemo.scala` file in the `src/main/scala` directory.
 Main.scala
