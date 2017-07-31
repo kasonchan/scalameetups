@@ -84,6 +84,24 @@ hello("Scala")
 ola("Scala")
 ```
 
+### Special function call forms
+We can indicate the last parameter to a function as repeated by placing an
+asterisk `*` after the type of the parameter.
+```scala
+def echo(args: String*): Unit = for (arg <- args) println(arg)
+```
+
+We can mix position of the parameters by using named arguments. We can define
+default parameter values by adding the values at the function definition.
+```scala
+// Default parameter values speed = 10.5 and time = 2
+def distance(speed: Double = 10.5, time: Double = 2): Double = speed * time
+
+distance(time = 5.0, speed = 10.0) // 50
+
+distance() // 21.0
+```
+
 ## Basic Types
 
 Basic Type | Range | Literal Examples
@@ -116,7 +134,7 @@ raw"No\\\\escape!" // No\\\\escape!
 to embedded expressions. 
 ```
 "%07d".format(123) // 0000123
-f"${123}%17d" //   123
+f"${123}%5d" //   123
 f"${123}%-5d" // 123  
 f"${math.Pi}%.5f" // 3.14167
 f"${0.45}%.2f" // 0.45
@@ -127,3 +145,106 @@ val name = "Scala"
 // 2.13 will be the last version of the Scala 2 series!
 f"$version%2.2f will be the last version of the $name%s 2 series!" 
 ```
+
+## Control Structures
+Scala provides a handful of built-in control structures. They are `if...else`, 
+`while`, `do-while`, `for`, `try`, `match` and function calls.
+
+### If expressions
+```scala
+val filename = if (args.nonEmpty) args(0) else "default.txt"
+```
+
+### While loops
+```scala
+var line = ""
+do {
+  line = scala.io.StdIn.readLine
+  println("Read: " + line)
+} while (line != "")
+
+
+// Does not work!
+// [error]  found   : Unit
+// [error]  required: Boolean
+// [error]     while (line = scala.io.StdIn.readLine != "") println("Read: " + line)
+var line = ""
+while (line = scala.io.StdIn.readLine != "") println("Read: " + line)
+```
+The type of the result is `Unit`. It is called the unit value and is written `()`.
+The while loop's condition will never be false because it will never be `""`. 
+Scala's `Unit` is different from Java's `void`.
+
+### For expressions
+We can iterate through collections, filter, nested iteration, mid-stream variable
+bindings, produce a new collection with for expressions.
+```scala
+for (i <- 1 to 4) println(i) // 1 2 3 4
+for (i <- 1 until 4) println(i) // 1 2 3 
+
+val files = new java.io.File(".").listFiles
+
+def fileLines(file: java.io.File) =
+  scala.io.Source.fromFile(file).getLines().toList
+
+def grep(pattern: String) =
+  for {
+    file <- files
+    if file.getName.endsWith(".sbt")
+    line <- fileLines(file)
+    trimmed = line.trim
+    if trimmed.matches(pattern)
+  } println(trimmed)
+
+grep(".*:=.*")
+
+def sbtFiles =
+  for {
+    file <- files
+    if file.getName.endsWith(".sbt")
+  } yield file
+
+scalaFiles.foreach(println)
+```
+
+### Exception handling with try expressions
+We can use try expressions to catch exceptions, yield a value
+```scala
+try {
+  val f = new FileReader("notExisted.txt")
+  println("Done")
+} catch {
+  case ex: FileNotFoundException => println(ex.getMessage)
+  case ex: Exception             => println(ex.getMessage)
+}
+
+try {...} catch {...} finally {...}
+
+def urlFor(path: String) = try {
+  new URL(path)
+} catch {
+  case e: MalformedURLException => new URL("https://www.scala-lang.org/")
+}
+```
+
+### Match expressions
+We can select from a number of alternatives using Scala's `match` expression.
+We can match expression by using arbitrary patterns.
+A few important differences from Java's switch statement. Scala can match any
+kind of constant but not just integer type, enum and string constants from Java.
+There is no `break`s at the end of each alternatives. Scala's `match` results in 
+a value. There is no fall through from one alternative to the next.
+
+```scala
+case object Nothing 
+
+val s = 5 match {
+  case 5 => "Five"
+  case Nothing => "Nothing"
+  case 2.5 => "Two point five"
+  case _ => "Huh?"
+}
+
+println(s)
+```
+Checkout the essential-scala for more information.
