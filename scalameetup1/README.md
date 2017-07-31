@@ -93,7 +93,6 @@ Install sbt on your mac using terminal:
 $ brew install sbt
 ```
 To get help from sbt interactive mode:
-
 <details>
   <summary>sbt help</summary>
   
@@ -138,7 +137,6 @@ To get help from sbt interactive mode:
 I would encourage you to download the Intellij IDEA Community for developing Scala. There are some cool plugin support for developing Scala and from the communities.
 For the future sessions, I will probably going to use Intellij IDEA for the whole time.
 But if you don't really wanna to use Intellij, here is a bash script to generate a SBT Scala project structure.
-
 <details>
   <summary>generateSBTProject.sh</summary>
 
@@ -171,7 +169,6 @@ scalaVersion := "${SCALA_VERSION}"" > build.sbt
 
 
 You can skip the following steps if you are not interested in using IntelliJ.
-
 <details>
   <summary>Click to expand.</summary>
 
@@ -204,11 +201,10 @@ scalameetup1
 Create a `resources` directory on your root directory of your project. Create a 
 file called `tags.txt` in this resources directory. We will need it for this 
 session. Data will be read from this file.
-
 <details>
   <summary>tags.txt</summary
 
-```text
+```scala
 cc1,Cost Center,Group,Cost Center,123,Kason,Company,7/21
 er1,Expense Report,Group,Expense Report,123,Kason,Company,3/21
 e1,Expense 1,Group,Expense,123,Kason,Company,6/21
@@ -220,8 +216,8 @@ e1,Expense 1,Group,Expense,123,Alice,Company,6/21
 e2,Expense 2,Group,Expense,123,Alice,Company,8/20
 e3,Expense 3,Group,Expense,123,Alice,Company,8/20
 ```
-</details>
 
+</details>
 
 Create a `TagsDemo.scala` file in the `src/main/scala` directory.
 Main.scala
