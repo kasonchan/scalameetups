@@ -18,32 +18,39 @@ Type in expressions for evaluation. Or try :help.
 scala>
 ```
 To get help from the REPL:
-```scala
-scala> :help
-All commands can be abbreviated, e.g., :he instead of :help.
-:edit <id>|<line>        edit history
-:help [command]          print this summary or command-specific help
-:history [num]           show the history (optional num is commands to show)
-:h? <string>             search the history
-:imports [name name ...] show import history, identifying sources of names
-:implicits [-v]          show the implicits in scope
-:javap <path|class>      disassemble a file or class name
-:line <id>|<line>        place line(s) at the end of history
-:load <path>             interpret lines in a file
-:paste [-raw] [path]     enter paste mode or paste a file
-:power                   enable power user mode
-:quit                    exit the interpreter
-:replay [options]        reset the repl and replay all previous commands
-:require <path>          add a jar to the classpath
-:reset [options]         reset the repl to its initial state, forgetting all session entries
-:save <path>             save replayable session to a file
-:sh <command line>       run a shell command (result is implicitly => List[String])
-:settings <options>      update compiler options, if possible; see reset
-:silent                  disable/enable automatic printing of results
-:type [-v] <expr>        display the type of an expression without evaluating it
-:kind [-v] <type>        display the kind of a type. see also :help kind
-:warnings                show the suppressed warnings from the most recent line which had any
-```
+
+<details>
+  <summary>scala> :help</summary>
+  
+  ```scala
+  scala> :help
+  All commands can be abbreviated, e.g., :he instead of :help.
+  :edit <id>|<line>        edit history
+  :help [command]          print this summary or command-specific help
+  :history [num]           show the history (optional num is commands to show)
+  :h? <string>             search the history
+  :imports [name name ...] show import history, identifying sources of names
+  :implicits [-v]          show the implicits in scope
+  :javap <path|class>      disassemble a file or class name
+  :line <id>|<line>        place line(s) at the end of history
+  :load <path>             interpret lines in a file
+  :paste [-raw] [path]     enter paste mode or paste a file
+  :power                   enable power user mode
+  :quit                    exit the interpreter
+  :replay [options]        reset the repl and replay all previous commands
+  :require <path>          add a jar to the classpath
+  :reset [options]         reset the repl to its initial state, forgetting all session entries
+  :save <path>             save replayable session to a file
+  :sh <command line>       run a shell command (result is implicitly => List[String])
+  :settings <options>      update compiler options, if possible; see reset
+  :silent                  disable/enable automatic printing of results
+  :type [-v] <expr>        display the type of an expression without evaluating it
+  :kind [-v] <type>        display the kind of a type. see also :help kind
+  :warnings                show the suppressed warnings from the most recent line which had any
+  ```
+</details>
+
+
 We can create our hello world scala program by create a file called `HelloWorld.scala`:
 ```scala
 $ vi HelloWorld.scala
@@ -86,37 +93,42 @@ Install sbt on your mac using terminal:
 $ brew install sbt
 ```
 To get help from sbt interactive mode:
-```bash
-$ sbt
-> help
-
-  help                                    Displays this help message or prints detailed help on requested commands (run 'help <command>').
-  completions                             Displays a list of completions for the given argument string (run 'completions <string>').
-  about                                   Displays basic information about sbt and the build.
-  tasks                                   Lists the tasks defined for the current project.
-  settings                                Lists the settings defined for the current project.
-  reload                                  (Re)loads the current project or changes to plugins project or returns from it.
-  projects                                Lists the names of available projects or temporarily adds/removes extra builds to the session.
-  project                                 Displays the current project or changes to the provided `project`.
-  set [every] <setting>                   Evaluates a Setting and applies it to the current project.
-  session                                 Manipulates session settings.  For details, run 'help session'.
-  inspect [uses|tree|definitions] <key>   Prints the value for 'key', the defining scope, delegates, related definitions, and dependencies.
-  <log-level>                             Sets the logging level to 'log-level'.  Valid levels: debug, info, warn, error
-  plugins                                 Lists currently available plugins.
-  ; <command> (; <command>)*              Runs the provided semicolon-separated commands.
-  ~ <command>                             Executes the specified command whenever source files change.
-  last                                    Displays output from a previous command or the output from a specific task.
-  last-grep                               Shows lines from the last output for 'key' that match 'pattern'.
-  export <tasks>+                         Executes tasks and displays the equivalent command lines.
-  exit                                    Terminates the build.
-  --<command>                             Schedules a command to run before other commands on startup.
-  show <key>                              Displays the result of evaluating the setting or task associated with 'key'.
-  all <task>+                             Executes all of the specified tasks concurrently.
-
-More command help available using 'help <command>' for:
-  !, +, ++, <, alias, append, apply, eval, iflast, onFailure, reboot, shell
-
-```
+<details>
+  <summary>sbt help</summary>
+  
+  ```bash
+  $ sbt
+  > help
+  
+    help                                    Displays this help message or prints detailed help on requested commands (run 'help <command>').
+    completions                             Displays a list of completions for the given argument string (run 'completions <string>').
+    about                                   Displays basic information about sbt and the build.
+    tasks                                   Lists the tasks defined for the current project.
+    settings                                Lists the settings defined for the current project.
+    reload                                  (Re)loads the current project or changes to plugins project or returns from it.
+    projects                                Lists the names of available projects or temporarily adds/removes extra builds to the session.
+    project                                 Displays the current project or changes to the provided `project`.
+    set [every] <setting>                   Evaluates a Setting and applies it to the current project.
+    session                                 Manipulates session settings.  For details, run 'help session'.
+    inspect [uses|tree|definitions] <key>   Prints the value for 'key', the defining scope, delegates, related definitions, and dependencies.
+    <log-level>                             Sets the logging level to 'log-level'.  Valid levels: debug, info, warn, error
+    plugins                                 Lists currently available plugins.
+    ; <command> (; <command>)*              Runs the provided semicolon-separated commands.
+    ~ <command>                             Executes the specified command whenever source files change.
+    last                                    Displays output from a previous command or the output from a specific task.
+    last-grep                               Shows lines from the last output for 'key' that match 'pattern'.
+    export <tasks>+                         Executes tasks and displays the equivalent command lines.
+    exit                                    Terminates the build.
+    --<command>                             Schedules a command to run before other commands on startup.
+    show <key>                              Displays the result of evaluating the setting or task associated with 'key'.
+    all <task>+                             Executes all of the specified tasks concurrently.
+  
+  More command help available using 'help <command>' for:
+    !, +, ++, <, alias, append, apply, eval, iflast, onFailure, reboot, shell
+  
+  ```
+  
+</details>
 
 ## Intellij IDEA
 
@@ -125,9 +137,11 @@ More command help available using 'help <command>' for:
 I would encourage you to download the Intellij IDEA Community for developing Scala. There are some cool plugin support for developing Scala and from the communities.
 For the future sessions, I will probably going to use Intellij IDEA for the whole time.
 But if you don't really wanna to use Intellij, here is a bash script to generate a SBT Scala project structure.
+<details>
+  <summary>generateSBTProject.sh</summary>
 
 ```bash
-vi generateSBTProject.sh
+$ vi generateSBTProject.sh
 #!/bin/sh
 NAME=$1
 PROJECT_VERSION=$2
@@ -151,12 +165,21 @@ echo "name := "${NAME}"
 version := "${PROJECT_VERSION}"
 scalaVersion := "${SCALA_VERSION}"" > build.sbt
 ```
+</details>
 
-For Intellij IDEA user, create a new project by select Scala > SBT and click Next:
+
+You can skip the following steps if you are not interested in using IntelliJ.
+<details>
+  <summary>Click to expand.</summary>
+
+For IntelliJ IDEA user, create a new project by select Scala > SBT and click Next:
 ![SelectSBT](https://github.com/kasonchan/scalameetups/blob/scalameetup1/scalameetup1/images/SelectSBT.png)
 
 Enter the project name scalameetup1 and click OK and you will have a project like this.
 ![scalameetup1](https://github.com/kasonchan/scalameetups/blob/scalameetup1/scalameetup1/images/scalameetup1.png)
+
+</details>
+
 
 We will have similar structure:
 ```bash
@@ -173,12 +196,11 @@ scalameetup1
 │       └── scala
 └── target # This directory is for the built generated java bytecodes and classes
 ```
-Other files or directories are generated by IntelliJ and SBT.
+- Other files or directories are generated by IntelliJ and SBT.
 
-Create a resources directory on your root directory of your project.
-
-Create a file called `tags.txt` in this resources directory. We will need it for this session. Data will be read from this file.
-tags.txt
+Create a `resources` directory on your root directory of your project. Create a 
+file called `tags.txt` in this resources directory. We will need it for this 
+session. Data will be read from this file.
 
 ```text
 cc1,Cost Center,Group,Cost Center,123,Kason,Company,7/21
