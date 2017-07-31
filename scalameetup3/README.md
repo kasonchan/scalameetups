@@ -2,14 +2,19 @@
 ```scala
 // Mutable variable
 var number = 1 
+
 // Strict immutable value, it is evaluated once when defined
 val firstname = "Kason" 
+
 // Lazy immutable value, it is evaluated when called and is never evaluated more than once
 lazy val lastname = "Chan" 
+
 // Immutable parameterless method, it is evaluated every time when called
 def email = "kason.chan@workday.com" 
 ```
 - **Type inference**, Scala's ability to figure out the types that you leave off. 
+
+*****
 
 ## Functions, Literals and Anonymous Functions
 ```scala
@@ -102,6 +107,8 @@ distance(time = 5.0, speed = 10.0) // 50
 distance() // 21.0
 ```
 
+***** 
+
 ## Basic Types
 
 Basic Type | Range | Literal Examples
@@ -116,6 +123,8 @@ Basic Type | Range | Literal Examples
 `Double`   | 64-bit IEEE 754 double-precision float | `val double: Double = 3.5`
 `Boolean`  | true or false | `val boolean: Boolean = true`
 
+*****
+
 ## String Interpolations
 Scala uses `s` string interpolator to process the literal. The `s` interpolator 
 evaluate each embedded expression, invoke `toString` on each result and replace
@@ -125,11 +134,13 @@ expression after a `$` to be evaluated.
 val name = "Scala"
 s"Hello $name!" // Hello Scala!
 ```
+
 `raw` string interpolator behaves like `s` except it does not recognize 
 character literal escape sequences.
 ```scala
 raw"No\\\\escape!" // No\\\\escape!
 ```
+
 `f` string interpolator allow us to attach printf-style formatting instructions
 to embedded expressions. 
 ```
@@ -145,6 +156,8 @@ val name = "Scala"
 // 2.13 will be the last version of the Scala 2 series!
 f"$version%2.2f will be the last version of the $name%s 2 series!" 
 ```
+
+*****
 
 ## Control Structures
 Scala provides a handful of built-in control structures. They are `if...else`, 
