@@ -42,6 +42,8 @@ For example:
 - `10` is an integer literal representing a value in Int type.
 - `'a'` is a character literal representing a value in Char type.
 - `"String"` is a string literal representing a value in String type.
+- `'symbol` is a symbol literal representing a value in Symbol type. We can get
+the name of the symbol by calling the function `.name`.
 - `(x: Int) => x + 2` is a function literal representing a value in `Int => Int`
 function type.
 
@@ -139,7 +141,20 @@ s"Hello $name!" // Hello Scala!
 character literal escape sequences.
 ```scala
 raw"No\\\\escape!" // No\\\\escape!
+
+"""No\\\\escape!""" // No\\\\escape!
+
+// Welcome to Scala Meetup.
+//    Shout "QUESTION" for help.
+"""Welcome to Scala Meetup.
+   Shout "QUESTION" for help."""
+
+// Welcome to Scala Meetup.
+// Shout "QUESTION" for help.
+"""|Welcome to Scala Meetup.
+   |Shout "QUESTION" for help.""".stripMargin
 ```
+- `|` at the beginning of each line and `.stripMargin` removes all leading and trailing spaces.
 
 `f` string interpolator allow us to attach printf-style formatting instructions
 to embedded expressions. 
@@ -156,6 +171,35 @@ val name = "Scala"
 // 2.13 will be the last version of the Scala 2 series!
 f"$version%2.2f will be the last version of the $name%s 2 series!" 
 ```
+
+*****
+
+## Basic Operations
+
+- Operators are functions, for example `1 + 2` in Scala invokes `1.+(2), 
+`-2.0` invokes `(2.0).unary_-`.
+- Arithmetic operations, for example `+`, `-`, `*`, `/`, `%`.
+- Relational operations, for example greater than `>`,  smaller than `<`, 
+smaller or equal to `<=`, greater or equal to `>=`, unary `!` invert a `Boolean` value.
+- Logical operations, for example logical-and (`&`, `&&`), logical-or(`|`, `||`).
+- Bitwise operations, for example bitwise-and `&`, bitwise-or `|`, bitwise-xor `^`, 
+bitwise complement operator `~`, shift right `>>`, unsigned shift right `>>>`, 
+shift left `<<`.
+- Equality `==` or inverse `!=`
+
+| Operator precedence |
+| - |
+| (all other special characters) |
+| `*` `/` `%` |
+| `+` `-` |
+| `:` |
+| `=` `!` |
+| `<` `>` |
+| `&` |
+| `^` |
+| ```&#124;``` |
+| (all letters) |
+| (all assignment operators) |
 
 *****
 
@@ -221,7 +265,7 @@ scalaFiles.foreach(println)
 ```
 
 ### Exception handling with try expressions
-We can use try expressions to catch exceptions, yield a value
+We can use `try-catch-finally` expressions to catch exceptions, yield a value
 ```scala
 try {
   val f = new FileReader("notExisted.txt")
@@ -238,6 +282,16 @@ def urlFor(path: String) = try {
 } catch {
   case e: MalformedURLException => new URL("https://www.scala-lang.org/")
 }
+
+def urlForTry(path: String): Option[URL] = Try {
+  new URL(path)
+} match {
+  case Success(successMsg) => Some(successMsg)
+  case Failure(_) => None
+}
+
+urlForTry("http://www.google.com") // Some(http://www.google.com)
+urlForTry("xyc") // None
 ```
 
 ### Match expressions
