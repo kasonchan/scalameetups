@@ -173,6 +173,8 @@ Basic Type | Range | Literal Examples
 `Double`   | 64-bit IEEE 754 double-precision float | `val double: Double = 3.5`
 `Boolean`  | true or false | `val boolean: Boolean = true`
 
+![classhierarchy](https://github.com/kasonchan/scalameetups/blob/scalameetup3/scalameetup3/images/classhierarchy.png)
+
 *****
 
 ## String Interpolations
