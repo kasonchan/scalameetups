@@ -1,22 +1,48 @@
+Scala is a modern **multi-paradigm** programming language **Object-Oriented** and 
+**Functional**. Every value is an object in Scala. Classes and traits describe 
+the types and behaviors of objects. Subclassing and a flexible mixin-based 
+composition mechanism extends classes as a clean replacement for multiple inheritance. 
+
+Every function is a value. Scala provides a lightweight syntax for defining 
+anonymous functions, it supports higher-order functions, it allows functions to 
+be nested, and supports currying. Scala’s case classes and its built-in support 
+for pattern matching model algebraic types used in many functional programming 
+languages. 
+
+Singleton objects provide a convenient way to group functions that aren’t 
+members of a class. Scala is statically typed and is extensible.
+
 ## Strict vs lazy vs def variables, and values
 ```scala
 // Mutable variable
 var number = 1 
 
+number = 2
+
 // Strict immutable value, it is evaluated once when defined
-val firstname = "Kason" 
+val firstname: String = "Kason" 
 
 // Lazy immutable value, it is evaluated when called and is never evaluated more than once
 lazy val lastname = "Chan" 
 
-// Immutable parameterless method, it is evaluated every time when called
+// Immutable parameterless function, it is evaluated every time when called
 def email = "kason.chan@workday.com" 
+
+// Mr. Kason Chan
+val fullname = { 
+  val fn = firstname + " " + lastname 
+  "Mr. " + " " + fn
+}
 ```
+- **Expressions** are computable statements.
 - **Type inference**, Scala's ability to figure out the types that you leave off. 
+- We can explicitly state the type `: String`.
+- We can group a number of expressions with a block `{}`.
+- The last expression in a block is the result of the overall block.
 
 *****
 
-## Functions, Literals and Anonymous Functions
+## Functions, Literals, Anonymous Functions and Methods
 ```scala
 def isGreater(x: Int, y: Int): Boolean = x > y
 
@@ -25,13 +51,13 @@ def max(x: Double, y: Double): Double = {
   else y
 }
 ```
-- Function definitions start with the keyword `def`.
-- `isGreater` and `max` are the function names.
+- Method definitions start with the keyword `def`.
+- `isGreater` and `max` are the method names.
 - A list of parameters in parentheses separated by commoas is the parameters.
 Each parameters need to have type specified `: Int` and `: Double`.
-- The result types of functions are followed by the parameters `: Boolean` and `: Double`.
-- For short functions, we can put them in one line. 
-For longer functions, we put the function body within the curly braces.
+- The result types of methods are followed by the parameters `: Boolean` and `: Double`.
+- For short methods, we can put them in one line. 
+For longer ones, we put the function body within the curly braces.
 
 Literals are notational sugar for representing values of some types the language
 considers particularly important. 
@@ -50,10 +76,13 @@ function type.
 Function literals are anonymous (functions): they don't have a name by default, 
 but we can give them a name by binding them to a variable.
 ```scala
+val number = () => 1
+
 val plusOne = (x: Int) => x + 1
 ```
+- Methods can take no parameters.
 
-We can also define a function to return a function (algorithm). 
+We can also define a method to return a function (algorithm). 
 ```scala
 // echo: echo[](val prefix: String) => String => String
 def echo(prefix: String) = (s: String) => {
@@ -67,7 +96,7 @@ val echoHello: String => String = echo("Hello")
 echoHello("Scala") 
 ```
 
-We can use this to encapsulate one or more functions behind a function, 
+We can use this to encapsulate one or more functions behind a method, 
 and is similar in that effect to the Factory and Strategy patterns.
 ```scala
 // greeting: greeting[](val language: String) => String => String
@@ -108,6 +137,25 @@ distance(time = 5.0, speed = 10.0) // 50
 
 distance() // 21.0
 ```
+
+By-name parameters are only evaluated when used. They are in contrast to 
+by-value parameters which are evaluated when defined. We can make a parameter 
+called by-name by prepending `=>` to its type.
+```scala
+
+val number = {
+  println("This is the number 5.")
+  5
+}
+
+// calculate: calculate[](val input: => Int) => Int
+def calculate(input: => Int) = input * 37
+
+calculate(number)
+```
+- Delay evaluation of a parameter until it is used can help performance if the 
+parameter is computationally intensive to evaluate or a longer-running block of 
+code such as fetching a URL.
 
 ***** 
 
@@ -315,3 +363,116 @@ val s = 5 match {
 println(s)
 ```
 Checkout the essential-scala for more information.
+
+*****
+
+## Classes, Objects, Case Classes, Case Objects and Traits
+
+```scala
+class Greeter(name: String) {
+  def greet(message: String): Unit =
+    println(s"$name: message")
+}
+
+val greeter = new Greeter("Scala")
+
+// Scala: Hello World!
+greeter.greet("Hello World!")
+```
+- Return type of `greet` is `Unit`.
+- All Scala expressions must have some value, Scala has a singleton value of 
+type `Unit`, written `()`. It carries no information.
+
+```scala
+case class Programmer(firstname: String = "Martin",
+                  lastname: String = "Odersky",
+                  programmingLanguage: String)
+
+// Person(Martin,Odersky,Scala)
+val person = Programmer(programmingLanguage = "Scala")
+
+val martin = Programmer(programmingLanguage = "Scala")
+
+// true
+person == martin
+
+// This is not recommended! It is an anti-pattern!
+case class Tool(var name: String)
+
+// Tool(Akka)
+var tool = Tool("Akka")
+
+tool.name = "Play"
+
+// Tool(Play)
+tool
+
+// Tool(Play)
+val play = tool.copy()
+```
+- `case class` is a special type of classes. We do not need `new` keyword to 
+instantiate it.
+- By default, `case class` is immutable, it has default implementations of 
+`equals`, `hashCode` and prettified `toString` and serialization.
+- Case classes are compared by structure and not by reference. Even though 
+`person` and `martin` refer to different objects, the value of each object is equal.
+- We can copy case classes. 
+- We can also do named argument `programmingLanguage = "Scala` and default parameter 
+`firstname: String = "Martin"`, `lastname: String = "Odersky"` just like in methods.
+
+```scala
+object Obj
+
+// obj: Obj.type = Obj$@42b77ca9
+val obj = Obj
+
+// A$A61$A$A61$Obj$@6e20af2
+println(obj)
+
+case object NoParameterClass
+
+// caseObj: NoParameterClass.type = NoParameterClass
+val caseObj = NoParameterClass
+
+// NoParameterClass
+println(caseObj)
+```
+- `object` are singleton.
+- `case object` are special type of classes without parameters. The primary use
+case here is to pattern match.
+- `case object` has default implementations of `equals`, `hashCode` and 
+prettified `toString` and serialization but not `object`.
+- We do not need multiple instances of an immutable type where the instances 
+would all have identical values.
+
+```scala
+sealed trait WebsiteVisitor {
+  def email: String = {
+    this match {
+      case User(id: Long, email: String) => email
+      case Anonymous(id: Long) => ""
+    }
+  }
+}
+
+final case class User(id: Long, override val email: String) extends WebsiteVisitor
+
+final case class Anonymous(id: Long) extends WebsiteVisitor
+
+// scala@scala-lang.org
+val scala = User(1L, "scala@scala-lang.org").getEmail
+
+val anonymous = Anonymous(1L).getEmail
+```
+- `trait`s are types containing some fields and methods.
+- We can combine multiple traits.
+- When a trait is "sealed" all of its subclasses are declared within the same 
+file and that makes the set of subclasses finite which allows certain compiler 
+checks.
+
+*****
+
+## References
+
+- Programming in Scala Third Edition by Martin Odersky
+- http://docs.scala-lang.org/tutorials/tour/tour-of-scala.html
