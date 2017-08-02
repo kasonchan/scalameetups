@@ -80,7 +80,7 @@ val number = () => 1
 
 val plusOne = (x: Int) => x + 1
 ```
-- Methods can take no parameters.
+- Functions can take no parameters.
 
 We can also define a method to return a function (algorithm). 
 ```scala
@@ -142,7 +142,6 @@ By-name parameters are only evaluated when used. They are in contrast to
 by-value parameters which are evaluated when defined. We can make a parameter 
 called by-name by prepending `=>` to its type.
 ```scala
-
 val number = {
   println("This is the number 5.")
   5
@@ -173,7 +172,7 @@ Basic Type | Range | Literal Examples
 `Double`   | 64-bit IEEE 754 double-precision float | `val double: Double = 3.5`
 `Boolean`  | true or false | `val boolean: Boolean = true`
 
-![classhierarchy](https://github.com/kasonchan/scalameetups/blob/scalameetup3/scalameetup3/images/classhierarchy.png)
+![unifiedtypes](http://docs.scala-lang.org/tutorials/tour/unified-types-diagram.svg)
 
 *****
 
