@@ -1,3 +1,5 @@
+# Scala 
+
 Scala is a modern **multi-paradigm** programming language **Object-Oriented** and 
 **Functional**. Every value is an object in Scala. Classes and traits describe 
 the types and behaviors of objects. Subclassing and a flexible mixin-based 
@@ -120,6 +122,43 @@ hello("Scala")
 ola("Scala")
 ```
 
+### Higher-Order Functions
+
+```scala
+def apply(f: Int => String, v: Int): String = f(v)
+
+def addCurly(i: Int): String = "{" + i + "}"
+
+// {12}
+apply(addCurly, 12)
+```
+- `f: Int => String` annotates paramete `f` takes a anonymous function with parameter
+`Int` and returns `String`.
+- Higher-order function can have one of three forms:
+  - One or more of its parameters is a function, and it returns some value.
+  - It returns a function, but none of its parameters is a function.
+  - Both of the above: One or more of its parameters is a function, and it returns a function.
+- Some common higher-order functions are `map`, `flatMap` and `filter`.
+
+### Currying
+```scala
+// Curried function
+def modN(n: Int)(x: Int): Boolean = (x % n) == 0
+
+val mod2: (Int) => Boolean = modN(2)
+
+// Vector(2, 4, 6, 8, 10)
+(1 to 10).filter(modN(2))
+
+// Vector(2, 4, 6, 8, 10)
+(1 to 10).filter(mod2)
+
+// Vector(3, 6, 9)
+(1 to 10).filter(modN(3))
+```
+- When a method is called with a fewer number of parameter lists, then this will 
+yield a function taking the missing parameter lists as its argument.
+
 ### Special function call forms
 We can indicate the last parameter to a function as repeated by placing an
 asterisk `*` after the type of the parameter.
@@ -173,6 +212,31 @@ Basic Type | Range | Literal Examples
 `Boolean`  | true or false | `val boolean: Boolean = true`
 
 ![unifiedtypes](http://docs.scala-lang.org/tutorials/tour/unified-types-diagram.svg)
+- `Any` is the supertype of all types, also called the top type. 
+- `Any` defines certain universal methods such as `equals`, `hashCode`, and `toString`. 
+- `Any` has two direct subclasses `AnyVal` and `AnyRef`.
+-  `AnyVal` represents value types. There are nine predefined value types and 
+they are non-nullable: `Double`, `Float`, `Long`, `Int`, `Short`, `Byte`, `Char`, 
+`Unit`, and `Boolean`. 
+- `Unit` is a value type which carries no meaningful information. 
+- There is exactly one instance of Unit which can be declared literally like so: `()`. 
+- All functions must return something so sometimes Unit is a useful return type.
+- `AnyRef` represents reference types. All non-value types are defined as reference types. 
+- Every user-defined type in Scala is a subtype of `AnyRef`. 
+
+![typecasting](http://docs.scala-lang.org/tutorials/tour/type-casting-diagram.svg)
+```scala
+val x: Long = 987654321
+val y: Float = x  // 9.8765434E8 (note that some precision is lost in this case)
+
+val face: Char = '☺'
+val number: Int = face  // 9786
+
+val x: Long = 987654321
+val y: Float = x  // 9.8765434E8
+val z: Long = y  // Does not conform
+```
+- Casting is unidirectional.
 
 *****
 
@@ -220,6 +284,26 @@ val name = "Scala"
 // 2.13 will be the last version of the Scala 2 series!
 f"$version%2.2f will be the last version of the $name%s 2 series!" 
 ```
+
+*****
+
+## Regex Expressions
+
+```scala
+val datePattern = """([0-9]{4}-[0-9]{2}-[0-9]{2})""".r
+
+def get(s:String) = s match {
+  case datePattern(d) => s"Date: $d"
+  case _ => s"Could not extract the date!"
+}
+
+// Date: 2017-06-30
+get("2017-06-30")
+
+// Could not extract the date!
+get("Scala")
+```
+- We can define regex expression by adding `.r` to the string literal.
 
 *****
 
@@ -316,6 +400,11 @@ scalaFiles.foreach(println)
 ### Exception handling with try expressions
 We can use `try-catch-finally` expressions to catch exceptions, yield a value
 ```scala
+import java.io.{FileNotFoundException, FileReader}
+import java.net.{MalformedURLException, URL}
+
+import scala.util.{Failure, Success, Try}
+
 try {
   val f = new FileReader("notExisted.txt")
   println("Done")
@@ -324,8 +413,9 @@ try {
   case ex: Exception             => println(ex.getMessage)
 }
 
-try {...} catch {...} finally {...}
+// try {...} catch {...} finally {...}
 
+// yield a new URL value
 def urlFor(path: String) = try {
   new URL(path)
 } catch {
@@ -473,7 +563,53 @@ checks.
 
 *****
 
+## Collections
+
+```scala
+val array: Array[Int] = Array(1, 2, 3)
+
+println(array.mkString("[", ",", "]"))
+
+val list: List[Any] = List(
+  "a string",
+  732,  // an integer
+  'c',  // a character
+  true, // a boolean value
+  () => "an anonymous function returning a string"
+)
+
+list.foreach(element => println(element))
+
+val tuple = ("Scala", 2.12)
+
+// Scala
+tuple._1
+
+// 2.12
+tuple._2
+
+// 2.12
+tuple.swap._1
+
+val xyz = Map("x" -> 24, "y" -> 25, "z" -> 26)
+
+// 0
+xyz.getOrElse("w", 0)
+```
+- Note that we use `()` instead of `[]` for Array in Scala.
+- By default, all collections are homogeneous. We can type cast the collections to
+the supertype to make them heterogeneous.
+- `.swap` can only work on tuple2.
+- All collections are immutable by default unless your explicitly import the mutable ones except `Array`.
+
+![collections](http://docs.scala-lang.org/resources/images/collections.mutable.png)
+
+*****
+
 ## References
 
 - Programming in Scala Third Edition by Martin Odersky
 - http://docs.scala-lang.org/tutorials/tour/tour-of-scala.html
+- https://www.tutorialspoint.com/scala/scala_regular_expressions.htm
+- http://underscore.io/training/courses/essential-scala/
+- http://docs.scala-lang.org/overviews/collections/introduction.html
