@@ -323,14 +323,14 @@ shift left `<<`.
 | Operator precedence |
 | - |
 | (all other special characters) |
-| `*` `/` `%` |
-| `+` `-` |
-| `:` |
-| `=` `!` |
-| `<` `>` |
-| `&` |
-| `^` |
-| ```&#124;``` |
+| * / % |
+| + - |
+| : |
+| = ! |
+| < > |
+| & |
+| ^ |
+| &#124; |
 | (all letters) |
 | (all assignment operators) |
 
