@@ -91,11 +91,35 @@ def echo(prefix: String) = (s: String) => {
   prefix + " " + s + "!"
 }
 
+// Partially applied function with return type specified
 // echoHello: String => String
 val echoHello: String => String = echo("Hello")
 
 // Hello Scala!
 echoHello("Scala") 
+```
+
+Above code snippet is equivalent to the following curried function.
+```scala
+// Curried function
+// echo: echo[](val prefix: String)(val s: String) => String
+def echo(prefix: String)(s: String): String = {
+  prefix + " " + s + "!"
+}
+
+// Partially applied function with return type specified
+// echoHello: String => String = $Lambda$1220/1056129247@6d8a3128
+val echoHello: String => String = echo("Hello")
+
+// Partially applied function using wildcard
+// echoOla: String => String = $Lambda$1221/1460756112@5a225f8d
+val echoOla = echo("Ola")_
+
+// Hello Scala!
+echoHello("Scala") 
+
+// Ola Scala!
+echoOla("Scala")
 ```
 
 We can use this to encapsulate one or more functions behind a method, 
@@ -145,6 +169,7 @@ apply(addCurly, 12)
 // Curried function
 def modN(n: Int)(x: Int): Boolean = (x % n) == 0
 
+// Partially applied function
 val mod2: (Int) => Boolean = modN(2)
 
 // Vector(2, 4, 6, 8, 10)
