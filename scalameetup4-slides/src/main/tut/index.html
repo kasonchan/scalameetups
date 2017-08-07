@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Akka Actor Basic Tour</title>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto+Mono);
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: normal;
+        }
+
+        a {
+            color: #65a9b6;
+            text-decoration-skip: ink;
+            -webkit-text-decoration-skip: ink;
+        }
+
+        .remark-code, .remark-inline-code {
+            background: #2b2b2b !important;
+            font-family: 'Ubuntu Mono';
+            font-size: 100%;
+        }
+
+        .remark-container {
+            background-color: #f3f3f3;
+        }
+
+        .remark-slide-content {
+            background-color: #f3f3f3;
+            color: #2b2b2b;
+            font-size: 22px;
+        }
+
+        .remark-slide-scaler {
+            box-shadow: none;
+        }
+
+        .vertical-align-middle * {
+            vertical-align: middle;
+        }
+
+        @media print {
+            .remark-slide-scaler {
+                width: 100% !important;
+                height: 100% !important;
+                transform: scale(1) !important;
+                top: 0 !important;
+                left: 0 !important;
+            }
+        }
+    </style>
+    <script src="https://use.fontawesome.com/3729cac000.js"></script>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+## Akka Actor Basic Tour
+
+### Kason Chan
+
+---
+
+## This talk was compiled with [tut](https://github.com/tpolecat/tut)
+
+```tut:silent
+import scala.util.Try
+```
+
+---
+
+## Akka
+
+* Built by Lightbend
+* Toolkit
+* A set of open-source libraries for
+  * designing scalable, resilient systems
+    * [Actors](http://doc.akka.io/docs/akka/current/scala/index-actors.html)
+    * [Network](http://doc.akka.io/docs/akka/current/scala/index-network.html)
+    * [Stream](http://doc.akka.io/docs/akka/current/scala/stream/index.html)
+    * [Akka HTTP](http://doc.akka.io/docs/akka-http/current/scala/http/)
+
+---
+
+## Actor
+
+* A computational entity, in response to a message it receives
+  * Send a finite number of messages to other actors
+  * Create a finite number of new actors
+  * Designate the behavior to be used for the next message it receives
+* Decoupled on three axes:
+  * Space: no guarantee and has no expectation about where is another actor
+  * Time: no guarantee and has no expectation about when its work will be done
+  * Interface: no defined interface, no idea of messages that others can understand,
+    nothing is shared between actors
+
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: '16:9',
+        slideNumberFormat: '',
+        highlightStyle: 'monokai',
+        navigation: {
+            scroll: false
+        }
+    });
+</script>
+</body>
+</html>
