@@ -1,8 +1,8 @@
 package actors
 
-import akka.actor.SupervisorStrategy.{Restart, Resume, Stop}
-import akka.actor.{Actor, ActorLogging, OneForOneStrategy, Props}
-import messages.{Msg, Ping, Pong}
+import akka.actor.SupervisorStrategy.Restart
+import akka.actor.{Actor, ActorLogging, OneForOneStrategy}
+import messages.{Msg, Ping}
 
 import scala.concurrent.duration._
 
