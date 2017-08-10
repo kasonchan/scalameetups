@@ -57,3 +57,5 @@ Actors are decoupled on three axes:
 about which messages other components can understand. Nothing is shared between 
 actors; actors never point to or use a shared piece of information that changes 
 in place. Information is passed in messages.
+
+More info on slides `src/main/tut/index.html`.
