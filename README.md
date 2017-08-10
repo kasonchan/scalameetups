@@ -12,6 +12,8 @@ These documents should be easily follow and test and try them out.
   - [Intro to Scala &#65120; SBT](https://github.com/kasonchan/scalameetups/blob/scalameetup1/scalameetup1/README.md)
   - [Scala Scripting, ScalaStyle and Scalafmt](https://github.com/kasonchan/scalameetups/blob/scalameetup2/scalameetup2/README.md)
 - Akka
+  - Actors
+    - [Akka Actors Basics Tour I](https://github.com/kasonchan/scalameetups/blob/scalameetup4/scalameetup4/README.md)
 - Spark
 - Web App
 - Android App
