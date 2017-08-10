@@ -1,4 +1,4 @@
-# Akka Actor Basics Tour
+# Akka Actor Basics Tour I
 
 ## Akka
 
@@ -58,4 +58,4 @@ about which messages other components can understand. Nothing is shared between
 actors; actors never point to or use a shared piece of information that changes 
 in place. Information is passed in messages.
 
-More info on slides `src/main/tut/index.html`.
+More info on slides [scalameetup4-slides.pdf](https://github.com/kasonchan/scalameetups/blob/scalameetup4/scalameetup4-slides/docs/scalameetup4-slides.pdf).
