@@ -33,8 +33,11 @@ lazy val publishSettings = Seq(
   ghpagesNoJekyll := true,
   makeSite := (makeSite dependsOn tut).value,
   siteSourceDirectory := tutTargetDirectory.value,
-  ghpagesPushSite := (ghpagesPushSite dependsOn makeSite).value
-  git.remoteRepo := "git@github.com:kasonchan/scalameetups.git"
+  ghpagesPushSite := (ghpagesPushSite dependsOn makeSite).value,
+  git.remoteRepo := "git@github.com:kasonchan/scalameetups.git",
+  mappings in makeSite ++= Seq(
+    (resourceDirectory in Compile).value / "tree.png" -> "images/tree.png"
+  )
 )
 
 lazy val refinedVersion = "0.8.1"

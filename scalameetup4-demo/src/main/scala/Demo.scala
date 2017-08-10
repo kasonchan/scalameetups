@@ -1,6 +1,6 @@
-import actors.Slave
-import akka.actor.{ActorSystem, Props}
-import messages.Ping
+import actors.Worker
+import akka.actor.{ActorRef, ActorSystem, DeadLetter, Inbox, Props}
+import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
@@ -13,13 +13,31 @@ object Demo {
 
   def main(args: Array[String]): Unit = {
 
-    val system: ActorSystem = ActorSystem("system")
+    // Default it is load from the file called application.conf
+    val config = ConfigFactory.load()
 
-    val slave = system.actorOf(Props[Slave], "slave")
+    val system = ActorSystem(name = "actorsystem",
+                             config = config.getConfig("application"))
 
-    slave ! Ping
+    val worker: ActorRef = system.actorOf(Props[Worker], "worker")
 
-    slave ! "Bye"
+    val deadLetter = system.actorOf(Props[Worker], "deadLetter")
+
+    system.eventStream.subscribe(deadLetter, classOf[DeadLetter])
+
+    // Create an "actor-in-a-box"
+    val inbox = Inbox.create(system)
+
+    inbox.send(worker, "Hello Actor!")
+    val slaveReply = inbox.receive(5.seconds)
+    print(s"$slaveReply\n")
+
+//    worker ! Ping
+
+//    worker ! PoisonPill
+//    worker ! Kill
+
+    worker ! "Bye"
 
     val sleepTime = 60
 
