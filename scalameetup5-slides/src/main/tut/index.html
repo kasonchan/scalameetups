@@ -1,0 +1,270 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Akka Actor Basic Tour</title>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto+Mono);
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: normal;
+        }
+
+        a {
+            color: #65a9b6;
+            text-decoration-skip: ink;
+            -webkit-text-decoration-skip: ink;
+        }
+
+        .remark-code, .remark-inline-code {
+            background: #2b2b2b !important;
+            font-family: 'Ubuntu Mono';
+            font-size: 100%;
+        }
+
+        .remark-container {
+            background-color: #f3f3f3;
+        }
+
+        .remark-slide-content {
+            background-color: #f3f3f3;
+            color: #2b2b2b;
+            font-size: 22px;
+        }
+
+        .remark-slide-scaler {
+            box-shadow: none;
+        }
+
+        .vertical-align-middle * {
+            vertical-align: middle;
+        }
+
+        @media print {
+            .remark-slide-scaler {
+                width: 100% !important;
+                height: 100% !important;
+                transform: scale(1) !important;
+                top: 0 !important;
+                left: 0 !important;
+            }
+        }
+    </style>
+    <script src="https://use.fontawesome.com/3729cac000.js"></script>
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle
+
+## Akka Actor Basics Tour II
+
+### Kason Chan
+
+---
+
+### This talk was compiled with [tut](https://github.com/tpolecat/tut)
+
+```tut:book
+import akka.actor.{ActorRef, ActorSystem, DeadLetter, Inbox, Props}
+import com.typesafe.config.ConfigFactory
+
+import scala.concurrent.Await
+import scala.concurrent.duration._
+```
+
+---
+
+## Recap
+
+* Akka
+* Actor Model
+* Actor System
+  * How to create and terminate it
+* Actor
+  * How to handle messages should be processed (Define an actor class and receive method)
+  * How to create and kill one in the actor system
+  * How to handle incoming message
+  * What to do before actor start and after actor is terminated
+
+---
+
+## Recap
+
+* Partial Function
+
+```tut
+def receive: PartialFunction[Any, Unit] = {
+    case msg: Msg =>
+      log.info(msg)
+    case any @ _ =>
+      log.warning(any.toString)
+  }
+```
+
+  * A function works for every argument of the defined type.
+  * A function defined as Any => Unit takes Any type and returns Unit type.
+
+* Props is a configuration class to specify options for the creation of actors,
+think of it as an immutable and thus freely shareable recipe for creating an actor
+including associated deployment information.
+
+```tut
+val you: ActorRef = system.actorOf(Props[Worker], "you")
+```
+
+---
+
+## Props
+
+* How to create an actor with default constructor values? This is a recommended Practice.
+
+```tut
+object MagicActor {
+  def props(magicNumber: Int): Props = Props(new DemoActor(magicNumber))
+}
+
+class MagicActor(magicNumber: Int) extends Actor {
+  def receive = {
+    case x: Int => sender() ! (x + magicNumber)
+  }
+}
+
+// Create an actor named magicActor
+val magicActor: ActorRef = system.actorOf(MagicActor.props(1), "magicactor")
+```
+
+---
+
+## Recommended Practices
+
+* Declare messages an actor can receive in the companion object of the Actor,
+which makes easier to know what it can receive
+
+```tut
+object MyActor {
+  case class Greeting(from: String)
+  case object Goodbye
+}
+
+class MyActor extends Actor with ActorLogging {
+  import MyActor._
+  def receive = {
+    case Greeting(greeter) => log.info(s"I was greeted by $greeter.")
+    case Goodbye           => log.info("Someone said goodbye to me.")
+  }
+}
+```
+
+---
+
+## ActorOf vs ActorSelection
+
+* actorOf only ever creates a new actor, and it creates it as a direct child of
+the context on which this method is invoked (which may be any actor or actor system).
+
+* actorSelection only ever looks up existing actors when messages are delivered,
+i.e. does not create actors, or verify existence of actors when the selection is created.
+
+---
+
+## Send Messages
+
+Messages can be sent to an actor through one of the following methods:
+
+* ! means “fire-and-forget”, e.g. send a message asynchronously and return immediately. Also known as tell.
+
+```tut
+val msg: String = "Hello World!"
+worker ! msg
+i.tell(msg, you)
+```
+
+* ? sends a message asynchronously and returns a Future representing a possible reply. Also known as ask.
+Message ordering is guaranteed on a per-sender basis.
+
+```tut
+case object Ping
+case object Pong
+import akka.pattern.ask
+me ? Ping // Success(Pong)
+ask(i, Ping) // Success(Pong)
+```
+
+---
+
+## Terminate an Actor
+
+```tut
+worker ! Kill
+```
+
+* Kill message causes the actor to throw a ActorKilledException, triggering a failure.
+
+```tut
+worker ! PoisonPill
+```
+
+* PoisonPill message will stop the actor when the message is processed.
+
+```tut:silent
+context stop self
+```
+
+* stop self will stop the actor itself.
+
+```tut:silent
+system stop worker
+```
+
+* stop worker at the application.
+
+---
+
+## Terminate an Actor
+
+* If an exception is thrown while a message is being processed, nothing happens
+to the mailbox.
+
+* If the actor is restarted, the same mailbox will be there.
+All messages on that mailbox will be kept the same.
+
+---
+
+## Demo
+
+---
+
+## Post Readings
+
+* Actor Systems: http://doc.akka.io/docs/akka/current/scala/general/actor-systems.html
+---
+
+## References
+
+* Akka Docs: http://akka.io/docs/
+* Reactive Messaging Patterns with Actor Model: https://github.com/VaughnVernon/ReactiveMessagingPatterns_ActorModel
+* Akka in Acton: https://www.manning.com/books/akka-in-action
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+    var slideshow = remark.create({
+        ratio: '16:9',
+        slideNumberFormat: '',
+        highlightStyle: 'monokai',
+        navigation: {
+            scroll: false
+        }
+    });
+</script>
+</body>
+</html>
