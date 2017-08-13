@@ -1,6 +1,6 @@
 import actors.{DefaultConstructorWorker, Worker}
 import akka.actor.{ActorRef, ActorSystem, Inbox, Props}
-import akka.pattern.ask
+import akka.pattern.{ask, pipe}
 import akka.util.Timeout
 import messages.{Hit, Ping}
 
@@ -37,6 +37,8 @@ object Demo {
 
     val result2: Future[Any] = me ? Ping
     result2.onComplete(println(_))
+    result2.pipeTo(you)
+    pipe(result2) to you
 
     val dcw1: ActorRef = system.actorOf(DefaultConstructorWorker.props((1, false, "dc1")), "dcw1")
 
