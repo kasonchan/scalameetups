@@ -10,6 +10,8 @@ case object Pong
 
 case object Hit
 
+case object Fine
+
 trait Messages {
 
   type Msg = String

@@ -1,8 +1,9 @@
-import actors.{DefaultConstructorWorker, Worker}
+import actors.TimedWorker.FirstTick
+import actors.{DefaultConstructorWorker, TimedWorker, Worker}
 import akka.actor.{ActorRef, ActorSystem, Inbox, Props}
 import akka.pattern.{ask, pipe}
 import akka.util.Timeout
-import messages.{Hit, Ping}
+import messages.{Hit, Fine, Ping}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -43,14 +44,24 @@ object Demo {
     val dcw1: ActorRef = system.actorOf(DefaultConstructorWorker.props((1, false, "dc1")), "dcw1")
 
     inbox.send(dcw1, "internalInteger")
-    val dcw1Reply1 = inbox.receive(5.seconds)
-    print(s"$dcw1Reply1\n")
+    val dcw1Integer = inbox.receive(10.seconds)
+    print(s"$dcw1Integer\n")
 
     dcw1 ! Hit
 
-    inbox.send(dcw1, "internalInteger")
-    val dcw1Reply2 = inbox.receive(200.seconds)
-    print(s"$dcw1Reply2\n")
+    inbox.send(dcw1, "internalString")
+    val dcw1String = inbox.receive(10.seconds)
+    print(s"$dcw1String\n")
+
+    dcw1 ! Fine
+
+    inbox.send(dcw1, "internalBoolean")
+    val dcw1Boolean = inbox.receive(50.seconds)
+    print(s"$dcw1Boolean\n")
+
+    val timer: ActorRef = system.actorOf(Props[TimedWorker], "timer")
+
+    timer ! FirstTick
 
   }
 
