@@ -9,13 +9,14 @@
         @import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,700,400italic);
         @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
         @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=McLaren);
 
         body {
-            font-family: 'Roboto Mono', monospace;
+          font-family: 'McLaren', cursive;
         }
 
         h1, h2, h3 {
-            font-family: 'Roboto Mono', monospace;
+            font-family: 'McLaren', cursive;
             font-weight: normal;
         }
 
@@ -126,6 +127,12 @@ val you: ActorRef = system.actorOf(Props[Worker], "you")
 
 ---
 
+### Actor Lifecycle
+
+<img src="../resources/actor_lifecycle.png" width="50%"/>
+
+---
+
 ### Props
 
 * How to create an actor with default constructor values? This is a recommended practice.
@@ -185,12 +192,6 @@ i.e. does not create actors, or verify existence of actors when the selection is
 // Select all ActorRef starting with you and send a Hey you message
 system.actorSelection("*/you*") ! "Hey you"
 ```
-
----
-
-### Actor Lifecycle
-
-<img src="../resources/actor_lifecycle.png" width="50%"/>
 
 ---
 
@@ -312,7 +313,85 @@ All messages on that mailbox will be kept the same.
 
 ---
 
+### Supervision Strategies
+
+* 2 classes of supervision strategies which come with Akka: OneForOneStrategy and AllForOneStrategy
+  * OneForOneStrategy applies the obtained directive only to the failed child. It is the default strategy if none is specified explicitly.
+  * AllForOneStrategy applies it to all siblings as well.
+
+```tut
+class Supervisor extends Actor with ActorLogging {
+
+val maxNrOfRetries = 3
+
+override val supervisorStrategy: OneForOneStrategy =
+  OneForOneStrategy(maxNrOfRetries = maxNrOfRetries,
+                    withinTimeRange = 1 minute) {
+    case _: Exception => Escalate
+}
+
+...
+```
+
+---
+
+### Routing
+
+* We can send messages to a router to efficiently route them to destination actors, known as its routees.
+* A Router can be used inside or outside of an actor
+* We can manage the routees yourselves or use a self contained router actor with configuration capabilities.
+* Akka provides us the following routing logics:
+
+```tut
+akka.routing.RoundRobinRoutingLogic
+akka.routing.RandomRoutingLogic
+akka.routing.SmallestMailboxRoutingLogic
+akka.routing.BroadcastRoutingLogic
+akka.routing.ScatterGatherFirstCompletedRoutingLogic
+akka.routing.TailChoppingRoutingLogic
+akka.routing.ConsistentHashingRoutingLogic
+```
+
+---
+
+### Routing
+
+```tut
+class Supervisor extends Actor with ActorLogging {
+
+  private val router: Router = {
+    val routees = Vector.fill(5) {
+      val r = context.actorOf(Props[Worker])
+      context watch r
+      ActorRefRoutee(r)
+    }
+    Router(RoundRobinRoutingLogic(), routees)
+  }
+
+  def receive: PartialFunction[Any, Unit] = {
+    case any @ _ =>
+      log.info(s"${sender().path} ${any.toString}")
+      router.route(any, self)
+  }
+
+}
+```
+
+---
+
 ### Demo
+
+---
+
+### Recap
+
+* Actor Lifecycle
+* How to create an actor with default constructor values?
+* ActorOf vs ActorSelection
+* Send Messages - !, ?, pipeTo and forward
+* Terminate Actors - Kill, PoisonPill, stop
+* Supervision Strategies - OneForOneStrategy vs AllForOneStrategy
+* Routing with different logics
 
 ---
 
@@ -322,6 +401,8 @@ All messages on that mailbox will be kept the same.
 * What is an Actor? http://doc.akka.io/docs/akka/current/scala/general/actors.html
 * Actors: http://doc.akka.io/docs/akka/current/scala/actors.html
 * Message Delivery Reliability: http://doc.akka.io/docs/akka/current/scala/general/message-delivery-reliability.html
+* One-For-One Strategy vs. All-For-One Strategy: http://doc.akka.io/docs/akka/snapshot/scala/general/supervision.html#one-for-one-strategy-vs-all-for-one-strategy
+* Routing: http://doc.akka.io/docs/akka/snapshot/scala/routing.html
 
 ---
 
@@ -330,6 +411,13 @@ All messages on that mailbox will be kept the same.
 * Akka Docs: http://akka.io/docs/
 * Reactive Messaging Patterns with Actor Model: https://github.com/VaughnVernon/ReactiveMessagingPatterns_ActorModel
 * Akka in Acton: https://www.manning.com/books/akka-in-action
+
+---
+
+### Thank you
+
+* Q&A/Comments/Suggestions?
+
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>
