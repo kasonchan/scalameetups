@@ -139,7 +139,7 @@ val you: ActorRef = system.actorOf(Props[Worker], "you")
 
 ```tut
 object MagicActor {
-  def props(magicNumber: Int): Props = Props(new DemoActor(magicNumber))
+  def props(magicNumber: Int): Props = Props(new MagicActor(magicNumber))
 }
 
 class MagicActor(magicNumber: Int) extends Actor {
