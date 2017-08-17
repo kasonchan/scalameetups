@@ -15,7 +15,6 @@ dist
 **/RUNNING_PID
 **/.settings
 **/.sass-cache
-**/scalastyle-config.xml
 
 # Mac
 .DS_Store
