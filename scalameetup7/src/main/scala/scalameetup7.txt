@@ -1,0 +1,28 @@
+| Scala Basics Tour - Classes, Objects and Traits
+
+---
+
+| This presentation slides are built with REPLesent!
+
+< REPLesent is a neat little tool to build presentations
+using the Scala REPL.
+
+< It is a good option for training sessions and talks
+with some live coding and more.
+
+< Thank you Ignacio Cavero for introducing it to me last week.
+
+---
+
+| Memory Refresher
+
+```
+"hello world".toList.filter(_.isLetter).groupBy(x => x).map { y => y._1 -> y._2.size }
+```
+
+---
+
+| Thank you for coming!
+
+| Q&A/Comments?/Suggestions?
+
