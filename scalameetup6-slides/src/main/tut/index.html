@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Scala Basics Tour II & Functional Programming?</title>
+    <title>Scala Basics Tour II - Collections</title>
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto+Mono);
         @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -67,15 +67,9 @@
 
 class: center, middle
 
-## Scala Basics Tour II & <br/> Functional Programming?
+## Scala Basics Tour - Collections
 
 ### Kason Chan
-
-???
-
-Welcome to today's meetup. Today we will finish up the Scala basics about Scala
-collections, we will talk more about traits and then talk about FP and have
-a discussion on what is FP?
 
 ---
 
@@ -90,10 +84,11 @@ println(helloWorld)
 
 ### Agenda
 
+* Tuples
 * Collections
-* Traits
-* Functional Programming in Scala
-* Functors, Applicatives and Monands
+  * List
+  * Set
+  * Map
 
 ---
 
@@ -441,198 +436,6 @@ months += (4 -> 'April)
 ### More Collections
 
 - Checkout https://docs.scala-lang.org/overviews/collections/introduction.html
-
----
-
-### Functional Programming (FP)
-
-* Construct all our programs using only pure functions that has no side effects including perform I/O, handle errors, modify data
-* FP is restriction on how we write programs but not on what programs we can express
-* Referential transparency and substitution model
-* Referential transparency is in any program, the expression can be replaced by its result
-without changing the meaning of the program.
-* An expression e is referentially transparent if, for all program p, all occurrences of e in p
-can be replaced by the result of evaluating e without affecting the meaning of p
-
----
-
-### Traits & Linearization
-
-* Fundamental unit of code reuse in Scala
-* Traits encapsulates field and method definitions whcih can be reused by mixing them into classes
-* Traits are not class inheritance, classes extends from traits can only inherit from one superclass
-* Linearization is a deterministic process that puts all traits in a linear inheritance hierarchy
-
----
-
-### Demo
-
----
-
-### Modelling Data with Traits
-
-* We express any data model in Scala in terms of logical ors and ands, like in OOP is-a and has-a relationship.
-* Logical ors and ands in Functional Programming (FP) are sum and product types and together form Algebraic Data Types (ADT).
-
----
-
-### Product Type (has-a and)
-
-* If A has a b (with type B) and a c (with type C), we write
-
-```tut:silent
-case class A(b: B, c: C)
-```
-
-or
-
-```tut:silent
-trait A {
-  def b: B
-  def c: C
-}
-```
-
----
-
-### Sum Type (is-a or)
-
-* If A is a B or C, we write
-
-```tut:silent
-sealed trait A
-final case class B() extends A
-final case class C() extends A
-```
-
----
-
-### Algebraic Data Type
-
-* A composite type, i.e., a type formed by combining other types
-* Two common classes of algebraic types are
-  * product types (i.e., tuples and records)
-  * sum types, also called tagged or disjoint unions or variant types
-* Code follows immediately from structure of the data
-
----
-
-### Missing Pattern?
-
-|          |      And      |    Or    |
-|----------|:-------------:|:--------:|
-| Is-a     |               | Sum Type |
-| Has-a    |  Product Type |          |
-
-* The “is-a and” pattern means that A is a B and C.
-  * This pattern is in some ways the inverse of the sum type pattern, and we can implement it as below.
-  * We use it to share implementation across several classes
-
-```tut:silent
-trait B
-trait C
-trait A extends B with C
-```
-
----
-
-### Missing Pattern?
-
-|          |      And      |    Or    |
-|----------|:-------------:|:--------:|
-| Is-a     |               | Sum Type |
-| Has-a    |  Product Type |          |
-
-* The “has-a or” patterns means that A has a B or C
-  * We can say that A has a d of type D, where D is a B or C
-
-```tut:silent
-trait A {
-  def d: D
-}
-sealed trait D
-final case class B() extends D
-final case class C() extends D
-```
-
-* We can also implement "has-a or" as A is a D or E, and D has a B and E has a C.
-
-```tut:silent
-sealed trait A
-final case class D(b: B) extends A
-final case class E(c: C) extends A
-```
-
----
-
-### Examples
-
-* A website visitor is:
-  * logged in user; or
-  * anonymous
-* A logged in user has:
-  * an ID; and
-  * an email address
-* An anonymous has:
-  * an ID
-
----
-
-### Examples
-
-```tut:silent
-sealed trait Visitor {
-    id: Id
-}
-final case class Anonymous(id: Id)  extends Visitor
-final case class User(id: Id, email: Email)  extends Visitor
-```
-
----
-
-### Examples
-
-* A calculation is a success or failure
-* A success has an value.
-* A failure has an error message.
-
----
-
-### Examples
-
-```tut:silent
-sealed trait Calculation
-final case class Success(value: Int) extends Calculation
-final case class Failure(msg: String) extends Calculation
-```
-
----
-
-### Type Class Pattern
-
-* A type class is a trait with at least one type variable.
-* The type variables specify the concrete types the type class instances are defined for.
-* Methods in the trait usually use the type variables.
-
-```tut:silent
-trait ExampleTypeClass[A] {
-  def doSomething(in: A): Foo
-}
-```
-
----
-
-### Functors, Applicatives, and Monads
-
-* http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
-
----
-
-### Recap
-
-* Collections
-* Traits - Modeling data
-* Functors, Applicative and Monands
 
 ---
 
