@@ -2,23 +2,303 @@
 
 ---
 
-| This presentation slides are built with REPLesent!
+This presentation slides are built with REPLesent!
 
-< REPLesent is a neat little tool to build presentations
+REPLesent is a neat little tool to build presentations
 using the Scala REPL.
 
-< It is a good option for training sessions and talks
-with some live coding and more.
-
-< Thank you Ignacio Cavero for introducing it to me last week.
+Thank you Ignacio Cavero for introducing it to me last week.
 
 ---
 
-| Memory Refresher
+| Collections Recap
+
+```
+List('ironman, 'flash, 'spiderman, 'thor, 'superman, 'wonderwoman).map(e => e.name.capitalize)
+```
+
+--
 
 ```
 "hello world".toList.filter(_.isLetter).groupBy(x => x).map { y => y._1 -> y._2.size }
 ```
+
+---
+
+| Collections Recap
+
+```
+val zippedLists = (List(1,3,5), List(2,4,6)).zipped
+val (x, y) = zippedLists.find(_._1 > 10).getOrElse(10)
+println(s"Found $x")
+```
+
+Possibilities
+1. Prints:
+Found 10
+2. Prints:
+Found ()
+3. Fails to compile.
+4. Throws a runtime exception.
+
+---
+
+| Collections Recap
+
+```
+def sumSizes(collections: Iterable[Iterable[_]]): Int =
+  collections.map(_.size).sum
+
+println("1: " + sumSizes(List(Set(1, 2), List(3, 4))))
+println("2: " + sumSizes(Set(List(1, 2), Set(3, 4))))
+```
+
+Possibilities
+1. Prints:
+  1: 4
+  2: 4
+2. Prints:
+  1: 4
+  2: 2
+3. Prints:
+  1: 2
+  2: 4
+4. Prints:
+  1: 2
+  2: 2
+
+---
+
+| Collections Recap
+
+```
+val xs = Seq(Seq("a", "b", "c"), Seq("d", "e", "f"),
+               Seq("g", "h"), Seq("i", "j", "k"))
+val ys = for (Seq(x, y, z) <- xs) yield x + y + z
+val zs = xs map { case Seq(x, y, z) => x + y + z }
+```
+
+Possibilities
+1. Evaluating both ys and zs throws a MatchError.
+2. Both ys and zs evaluate to: Seq(abc, def, ijk)
+3. Evaluating ys throws a MatchError, and zs evaluates to: Seq(abc, def, ijk)
+4. ys evaluates to:
+  Seq(abc, def, ijk)
+  and evaluating zs throws a MatchError.
+
+--
+
+```
+val xs = Seq(Seq("a", "b", "c"), Seq("d", "e", "f"),
+               Seq("g", "h"), Seq("i", "j", "k"))
+```
+
+--
+
+```
+val ys = for (Seq(x, y, z) <- xs) yield x + y + z
+
+```
+
+--
+
+```
+val zs = xs map { case Seq(x, y, z) => x + y + z }
+```
+
+---
+
+| Classes
+
+- A class is blueprint for objects.
+- Create objects from the class blueprint with keyword new.
+
+```
+class ClassPerson(var firstName: String = "Barry",
+                  val lastName: String = "Allen",
+                  gender: Char = 'M',
+                  ability: String = "Speed") {
+  def name: String = s"$firstName $lastName"
+
+  def isMale: Boolean = gender match {
+    case 'M' => true
+    case _ => false
+  }
+}
+```
+
+--
+
+```
+val barry = new ClassPerson()
+println(barry.name)
+println(barry)
+```
+
+--
+
+```
+val bart = new ClassPerson()
+println(barry == bart)
+```
+
+---
+
+| Case Classes
+
+- A case class is blueprint for objects.
+- We create objects from the case class blueprint without keyword new.
+
+```
+case class CaseClassPerson(var firstName: String = "Peter",
+                           lastName: String = "Parker",
+                           gender: Char = 'M') {
+  def name: String = s"$firstName $lastName"
+
+  def isMale: Boolean = gender match {
+    case 'M' => true
+    case _ => false
+  }
+}
+```
+
+--
+
+```
+val ccp1 = CaseClassPerson()
+println(ccp1)
+val ccp2 = CaseClassPerson()
+println(ccp2)
+println(ccp1 == ccp2)
+```
+
+---
+
+| Case Classes vs Normal Classes
+
+- We can do pattern matching on it.
+- You can construct instances of these classes without using the new keyword.
+- All constructor arguments are accessible from outside using automatically
+  generated accessor functions.
+- The toString method is automatically redefined to print the name of the
+  case class and all its arguments.
+- The equals method is automatically redefined to compare two instances of the
+  same case class structurally rather than by identity.
+- The hashCode method is automatically redefined to use the hashCodes of
+  constructor arguments.
+
+---
+
+| Abstract Classes
+
+- abstract modifier signifies that class may have abstract members.
+
+```
+abstract class X {
+  def content: Symbol
+  def demo() = println("X")
+}
+```
+
+--
+
+```
+val x = new X
+```
+
+--
+
+```
+class A extends X {
+  override def content: Symbol = 'A
+  override def demo() = println("A")
+}
+```
+
+---
+
+| Final modifier
+
+- final modifier ensures that member cannot be overridden
+
+```
+class Class(final var cValue: Symbol = 'cValue) {
+  final def value = 'finalAtClass
+}
+```
+
+--
+
+```
+class OverrideClass(var cValue: Symbol = 'cValue) extends Class() {
+  override def value = 'ValueAtCverrideClass
+}
+```
+
+--
+
+- final modifier ensures entire class not be subclassed
+
+```
+final abstract class FinalAbstract {
+  def value = 'FinalAbstract
+}
+```
+
+--
+
+```
+class FinalAbstractExtension extends FinalAbstract {
+  override def value = 'FinalAbstractExtension
+}
+```
+
+---
+
+| Case Objects vs Objects
+
+```
+object Object { var x = 0 }
+val o1 = Object
+val o2 = Object
+o1 match {
+  case Object => "Object"
+  case _ => "Unknown"
+}
+o2.x = 1
+println(o1.x)
+println(o2.x)
+println(o1 == o2)
+```
+
+--
+
+```
+case object CaseObject { var x = 0 }
+val co1 = CaseObject
+val co2 = CaseObject
+co1 match {
+  case CaseObject => "Case Object"
+  case _ => "Unknown"
+}
+co2.x = 1
+println(co1.x)
+println(co2.x)
+println(co1 == co2)
+```
+
+---
+
+| Traits
+
+---
+
+| References
+
+* Scala Puzzlers
+* Programming in Scala
+* Essential Scala
+* Scala Design Patterns
 
 ---
 
