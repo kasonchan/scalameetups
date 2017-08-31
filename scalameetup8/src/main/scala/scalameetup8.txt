@@ -1,0 +1,234 @@
+| More Traits and FP (in Scala)
+
+---
+This presentation slides are built with REPLesent!
+
+REPLesent is a neat little tool to build presentations
+using the Scala REPL.
+---
+| Multiple inheritance
+
+```
+import scala.collection.mutable.ArrayBuffer
+
+abstract class IntQueue {
+  def get(): Int
+
+  def put(x: Int): Unit
+}
+
+class BasicIntQueue extends IntQueue {
+  private val list = ArrayBuffer[Int]()
+
+  def get(): Int = list.remove(0)
+
+  def put(x: Int) = {
+    list += x
+  }
+}
+```
+---
+```
+trait Incrementing extends IntQueue {
+  abstract override def put(x: Int): Unit = super.put(x + 1)
+}
+
+trait Filter extends IntQueue {
+  abstract override def put(x: Int): Unit = if (x >= 0) super.put(x)
+}
+
+trait Doubling extends IntQueue {
+  abstract override def put(x: Int): Unit = super.put(2 * x)
+}
+```
+---
+```
+val queue = new BasicIntQueue with Doubling with Incrementing
+
+queue.put(1)
+queue.put(0)
+queue.put(-1)
+```
+--
+
+```
+println(queue.get())
+println(queue.get())
+println(queue.get())
+```
+---
+| Modelling Data with Traits
+
+- We express any data model in Scala in terms of logical ors and ands,
+  like in OOP is-a and has-a relationship.
+- Logical ors and ands in Functional Programming (FP) are sum and product types
+  and together form Algebraic Data Types (ADT).
+---
+Product Type (has-a and)
+
+- If A has a b (with type B) and a c (with type C), we write
+
+```
+case class A(b: B, c: C)
+```
+
+or
+
+```
+trait A {
+  def b: B
+  def c: C
+}
+```
+---
+| Sum Type (is-a or)
+
+- If A is a B or C, we write
+
+```
+sealed trait A
+final case class B() extends A
+final case class C() extends A
+```
+---
+| Algebraic Data Type
+
+- A composite type, i.e., a type formed by combining other types
+- Two common classes of algebraic types are
+  - product types (i.e., tuples and records)
+  - sum types, also called tagged or disjoint unions or variant types
+- Code follows immediately from structure of the data
+---
+| Missing Pattern?
+
+```
+|       |      And     |    Or    |
+|-------|--------------|----------|
+| Is-a  |              | Sum Type |
+| Has-a | Product Type |          |
+```
+
+- The “is-a and” pattern means that A is a B and C.
+  - This pattern is in some ways the inverse of the sum type pattern,
+    and we can implement it as below.
+  - We use it to share implementation across several classes
+
+```
+trait B
+trait C
+trait A extends B with C
+```
+---
+| Missing Pattern?
+
+```
+|       |      And     |    Or    |
+|-------|--------------|----------|
+| Is-a  |              | Sum Type |
+| Has-a | Product Type |          |
+```
+
+- The “has-a or” patterns means that A has a B or C
+  - We can say that A has a d of type D, where D is a B or C
+
+```
+trait A {
+  def d: D
+}
+sealed trait D
+final case class B() extends D
+final case class C() extends D
+```
+
+- We can also implement "has-a or" as A is a D or E,
+  and D has a B and E has a C.
+
+```
+sealed trait A
+final case class D(b: B) extends A
+final case class E(c: C) extends A
+```
+---
+- A website visitor is:
+  - logged in user; or
+  - anonymous
+- A logged in user has:
+  - an ID; and
+  - an email address
+- An anonymous has:
+  - an ID
+---
+```
+sealed trait Visitor {
+    id: Id
+}
+final case class Anonymous(id: Id)  extends Visitor
+final case class User(id: Id, email: Email)  extends Visitor
+```
+---
+- A calculation is a success or failure
+- A success has an value.
+- A failure has an error message.
+---
+```
+sealed trait Calculation
+final case class Success(value: Int) extends Calculation
+final case class Failure(msg: String) extends Calculation
+```
+---
+| Type Class Pattern
+
+- A type class is a trait with at least one type variable.
+- The type variables specify the concrete types
+  the type class instances are defined for.
+- Methods in the trait usually use the type variables.
+
+```
+trait ExampleTypeClass[A] {
+  def doSomething(in: A): Foo
+}
+```
+---
+| Functional Programming
+
+- Programming paradigm
+- Rooted in Mathematics
+- Language independent
+- Key principle is that all computation is mathematical function
+- Mathematical functions map from input to output
+---
+| Functions
+
+```
+def f(x: Int) = x * 2
+```
+--
+
+```
+def g(f: Int => Int)(x: Int, y: Int) = f(x) + f(y)
+```
+--
+
+```
+def h(x: Int) = if (x % 2 == 0) 1 else 0
+```
+---
+| Functional Programming
+
+- Key principles
+  - We can't change the input of functions.
+  - We can't change the variable (Immutability).
+  - Programming without variable assignments.
+
+---
+| References
+
+- Scala Puzzlers
+- Programming in Scala
+- Essential Scala
+- Scala Design Patterns
+
+---
+| Thank you for coming!
+
+| Q&A/Comments?/Suggestions?
