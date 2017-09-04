@@ -57,9 +57,29 @@ println(queue.get())
 println(queue.get())
 ```
 ---
+| To trait, or not to trait?
+
+- If the behavior will not be reused, then make it a concrete class. It is not
+  reusable behavior after all.
+- If it might be reused in multiple, unrelated classes, make it a trait. Only
+  traits can be mixed into different parts of the class hierarchy.
+- If you want to inherit from it in Java code, use an abstract class. Since
+  traits with code do not have a close Java analog, it tends to be awkward to
+  inherit from a trait in a Java class.
+---
+| To trait, or not to trait?
+
+- If you plan to distribute it in compiled form, and you expect outside
+  groups to write classes inheriting from it, you might lean towards using an
+  abstract class.
+- If efficiency is very important, lean towards using a class.
+- If you still do not know, after considering the above, then start by making
+  it as a trait. You can always change it later, and in general using a trait
+  keeps more options open.
+---
 | Modelling Data with Traits
 
-- We express any data model in Scala in terms of logical ors and ands,
+- We can express any data model in Scala in terms of logical ors and ands,
   like in OOP is-a and has-a relationship.
 - Logical ors and ands in Functional Programming (FP) are sum and product types
   and together form Algebraic Data Types (ADT).
@@ -219,6 +239,88 @@ def h(x: Int) = if (x % 2 == 0) 1 else 0
   - We can't change the input of functions.
   - We can't change the variable (Immutability).
   - Programming without variable assignments.
+
+---
+| Functional Programming
+
+- We try to find abstractions in programming, we derived from mathematics
+  - Monoids
+  - Functors
+  - Monands
+- We try to map mathematics to programming:
+  - We have types - Int, Double, Long, or custom data types.
+  - We can do algebra of types by characterizing operations the types support
+    and the laws of these operations.
+---
+| Monoids
+
+- Pure algebraic structure, only defined by its algebra
+
+- Monoid law:
+  - A Monoid contains T type.
+  - A Monoid contains one associative operation. Any x, y and z of type T,
+    op(op(x, y), z) == op(x, op(y, z)).
+  - A Monoid must have an identity element - zero. Operations will always return
+    other element. op(x, zero) == x and op(zero, x) == x.
+---
+| Monoids
+
+- Examples: string concatenation, sum, product, list.
+--
+
+- Integer addition:
+  - Type: Int.
+  - Associative operation: add. add(add(3, 2), 1) == add(3, add(2, 1)).
+  - Identity element: 0. add(3, 0) == add(0, 3) == 0.
+---
+| Monoids
+
+- Integer multiplication:
+--
+  - Type: Int.
+  - Associative operation: multiply. multiply(multiply(3, 2), 1) == multiply(3, multiply(2, 1)).
+  - Identity element: 1. multiply(3, 1) == multiply(1, 3) == 3.
+---
+| Monoids
+
+```
+trait Monoid[T] {
+  def op(l: T, r: T): T
+  def zero: T
+}
+```
+
+- How to implement an intAddition, intMultiplication and stringConcatenation?
+---
+| Monoids
+
+```
+val intAddition = Monoid[Int] = new Monoid[Int] {
+  val zero: Int = 0
+  override def op(l: Int, r: Int) = l + r
+}
+```
+--
+
+```
+val intMultiplication = Monoid[Int] = new Monoid[Int] {
+  val zero: Int = 1
+  override def op(l: Int, r: Int) = l * r
+}
+```
+--
+
+```
+val stringConcatenation: Monoid[Int] = new Monoid[String] {
+  val zero: Int = ""
+  override def op(l: String, r: String) == l + r
+}
+```
+---
+| Functors
+
+---
+| Monads
 
 ---
 | References
