@@ -179,8 +179,11 @@ final case class E(c: C) extends A
   - an ID
 ---
 ```
+type Id = Int
+type Email = String
+
 sealed trait Visitor {
-    id: Id
+  val id: Id
 }
 final case class Anonymous(id: Id)  extends Visitor
 final case class User(id: Id, email: Email)  extends Visitor
@@ -255,6 +258,7 @@ def h(x: Int) = if (x % 2 == 0) 1 else 0
 | Monoids
 
 - Pure algebraic structure, only defined by its algebra
+--
 
 - Monoid law:
   - A Monoid contains T type.
@@ -269,6 +273,7 @@ def h(x: Int) = if (x % 2 == 0) 1 else 0
 --
 
 - Integer addition:
+--
   - Type: Int.
   - Associative operation: add. add(add(3, 2), 1) == add(3, add(2, 1)).
   - Identity element: 0. add(3, 0) == add(0, 3) == 0.
@@ -289,13 +294,14 @@ trait Monoid[T] {
   def zero: T
 }
 ```
-
-- How to implement an intAddition, intMultiplication and stringConcatenation?
 ---
 | Monoids
 
+- How to implement an intAddition, intMultiplication and stringConcatenation?
+--
+
 ```
-val intAddition = Monoid[Int] = new Monoid[Int] {
+val intAddition = new Monoid[Int] {
   val zero: Int = 0
   override def op(l: Int, r: Int) = l + r
 }
@@ -303,7 +309,7 @@ val intAddition = Monoid[Int] = new Monoid[Int] {
 --
 
 ```
-val intMultiplication = Monoid[Int] = new Monoid[Int] {
+val intMultiplication = new Monoid[Int] {
   val zero: Int = 1
   override def op(l: Int, r: Int) = l * r
 }
@@ -311,14 +317,99 @@ val intMultiplication = Monoid[Int] = new Monoid[Int] {
 --
 
 ```
-val stringConcatenation: Monoid[Int] = new Monoid[String] {
-  val zero: Int = ""
-  override def op(l: String, r: String) == l + r
+val stringConcatenation: Monoid[String] = new Monoid[String] {
+  val zero: String = ""
+  override def op(l: String, r: String) = l + r
+}
+```
+---
+| Monoids
+
+- How can we use Monoids for parallel computation?
+- They are naturally used with lists and collections.
+--
+
+```
+def foldLeft[B](z: B)(f: (B, A) => B): B
+
+def foldRight[B](z: B)(f: (A, B) => B): B
+```
+--
+
+- If A and B are of same type, we end up with these:
+
+```
+def foldLeft[A](z: A)(f: (A, A) => A): A
+
+def foldRight[A](z: A)(f: (A, A) => A): A
+```
+---
+| Monoids
+
+```
+val ints = (1 to 10).toList
+
+val product = ints.foldLeft(intMultiplication.zero)(intMultiplication.op)
+println(product)
+
+val sum = ints.foldRight(intAddition.zero)(intAddition.op)
+```
+---
+| Monoids
+
+- More generic functions to fold a list
+
+```
+def fold[T](list: List[T])(m: Monoid[T]): T =
+  list.foldLeft(m.zero)(m.op)
+
+fold(ints)(intAddition)
+```
+---
+| Functors
+
+- Monoids as a way to abstract some computations.
+- Functors come from Category Theory in Mathematics to abstract specific kind
+  of computations.
+- Functors is a class that has a map method and conform the functor laws.
+- map method for a functor of F[T] type takes a function from T to Y as
+  parameter and returns F[Y] as a result.
+---
+| Functors
+
+- Functor law
+  - Identity: When identity function is mapped over some data, the identity
+    function does not change it. map(x)(i => i) == x.
+  - Composition: Multiple maps compose together and makes no difference.
+    x.map(i => y(i)).map(i => z(i)) or x.map(i => z(y(i)))
+  - The map function preserve the data structure. It does not add or remove
+    elements, change the order, etc.
+---
+| Functors
+
+```
+trait Functor[F[_]] {
+  def map[T, Y](l: F[T])(f: T => Y): F[Y]
 }
 ```
 ---
 | Functors
 
+```
+val seqFunctor = new Functor[Seq] {
+  override def map[T, Y](l: Seq[T])(f: T => Y): Seq[Y] = l.map(f)
+}
+```
+--
+
+```
+val heroes = Seq("Flash", "Spiderman", "Ironman")
+val mappings = Map("Flash" -> "Barry Allen",
+  "Spiderman" -> "Peter Parker",
+  "Ironman" -> "Tony Stark")
+
+seqFunctor.map(heroes)(i => (i, mappings(i)))
+```
 ---
 | Monads
 
