@@ -413,6 +413,72 @@ seqFunctor.map(heroes)(i => (i, mappings(i)))
 ---
 | Monads
 
+- Monoids allow us to implement generic functionality with certainty as we
+  expect certain conditions hold.
+- If Monoid law is broken, we have no way to expect how they will behave.
+- Monads are functors that have unit and and flatMap methods
+--
+
+```
+def flatten[T](x: F[F[T]]): M[T]
+def flatMap[T](f: Y => Monad[T]): Monad[T] = flatten(map(f))
+def unit[T](value: T): Moand[T]
+
+def map[T](f: Y => Monad[T]): Monad[T] = flatMap { x => unit(f(x)) }
+```
+---
+| Monads
+
+- Monad law
+  - Identity law: map and flatMap over identity function does not change the data:
+    map(x)(i => i) == x and x.flatMap(i => unit(i)) == x. unit method is like
+    zero element in Monoids.
+  - Unit law: unit(x).flatMap { y => f(y) } == f(y) and
+    unit(x).map { y => f(x) } == unit(f(x))
+  - Composition: Multiple maps and flatMap must be composed together.
+    x.map(i => y(i)).map(i => z(i)) === x.map(i => z(y(i)))
+    x.flatMap(i => y(i)).flatMap(i => z(i)) == x.flatMap(i => y(i).flatMap(j => z(j)))
+---
+| Monads
+
+- Monad law
+  - Zero identity: No matter what we apply to it, it still going to be zero.
+    zero.map(i => f(i)) == zero
+    zero.flatMap(i => f(i)) == zero
+  - Reverse zero: If we replace everything with zero, our result will be zero.
+    x.flatMap(i => zero) == zero
+  - Communtativity: We can do kinda addition with zero monand will be communtative.
+    x plus zero == zero plus x == x
+---
+| Monads
+
+```
+trait Functor[T] {
+  def map[Y](f: Y => Monad[T]): Monad[Y]
+}
+
+trait Monad[T] extends Functor[T] {
+  def unit[Y](value: Y): Monad[Y]
+  def flatMap[Y](f: T => Monad[Y]): Monad[Y]
+  override def map[Y](f: T => Monad[Y]): Monad[Y] = flatMap(i => unit(f(i)))
+}
+```
+---
+| Monads
+
+```
+sealed trait Option[A] extends Monad[A]
+
+case class Some[A](a: A) extends Option[A] {
+  override def unit[Y](value: Y): Monad[Y] = Some(value)
+  override def flatMap[Y](f: A => Monad[Y]): Monad[Y] = f(a)
+}
+
+case class None[A]() extends Option[A] {
+  override def unit[Y](value: Y): Monad[Y] = None()
+  override def flatMap[Y](f: A => Monad[Y]): Monad[Y] = None()
+}
+```
 ---
 | References
 
@@ -420,7 +486,6 @@ seqFunctor.map(heroes)(i => (i, mappings(i)))
 - Programming in Scala
 - Essential Scala
 - Scala Design Patterns
-
 ---
 | Thank you for coming!
 
