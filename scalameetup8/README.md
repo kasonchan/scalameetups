@@ -7,6 +7,7 @@ This presentation slides are built with REPLesent!
 
 REPLesent is a neat little tool to build presentations
 using the Scala REPL.
+
 ---
 | Multiple inheritance
 
