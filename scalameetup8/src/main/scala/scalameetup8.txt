@@ -1,0 +1,492 @@
+| More Traits and FP (in Scala)
+
+---
+This presentation slides are built with REPLesent!
+
+REPLesent is a neat little tool to build presentations
+using the Scala REPL.
+---
+| Multiple inheritance
+
+```
+import scala.collection.mutable.ArrayBuffer
+
+abstract class IntQueue {
+  def get(): Int
+
+  def put(x: Int): Unit
+}
+
+class BasicIntQueue extends IntQueue {
+  private val list = ArrayBuffer[Int]()
+
+  def get(): Int = list.remove(0)
+
+  def put(x: Int) = {
+    list += x
+  }
+}
+```
+---
+```
+trait Incrementing extends IntQueue {
+  abstract override def put(x: Int): Unit = super.put(x + 1)
+}
+
+trait Filter extends IntQueue {
+  abstract override def put(x: Int): Unit = if (x >= 0) super.put(x)
+}
+
+trait Doubling extends IntQueue {
+  abstract override def put(x: Int): Unit = super.put(2 * x)
+}
+```
+---
+```
+val queue = new BasicIntQueue with Doubling with Incrementing
+
+queue.put(1)
+queue.put(0)
+queue.put(-1)
+```
+--
+
+```
+println(queue.get())
+println(queue.get())
+println(queue.get())
+```
+---
+| To trait, or not to trait?
+
+- If the behavior will not be reused, then make it a concrete class. It is not
+  reusable behavior after all.
+- If it might be reused in multiple, unrelated classes, make it a trait. Only
+  traits can be mixed into different parts of the class hierarchy.
+- If you want to inherit from it in Java code, use an abstract class. Since
+  traits with code do not have a close Java analog, it tends to be awkward to
+  inherit from a trait in a Java class.
+---
+| To trait, or not to trait?
+
+- If you plan to distribute it in compiled form, and you expect outside
+  groups to write classes inheriting from it, you might lean towards using an
+  abstract class.
+- If efficiency is very important, lean towards using a class.
+- If you still do not know, after considering the above, then start by making
+  it as a trait. You can always change it later, and in general using a trait
+  keeps more options open.
+---
+| Modelling Data with Traits
+
+- We can express any data model in Scala in terms of logical ors and ands,
+  like in OOP is-a and has-a relationship.
+- Logical ors and ands in Functional Programming (FP) are sum and product types
+  and together form Algebraic Data Types (ADT).
+---
+Product Type (has-a and)
+
+- If A has a b (with type B) and a c (with type C), we write
+
+```
+case class A(b: B, c: C)
+```
+
+or
+
+```
+trait A {
+  def b: B
+  def c: C
+}
+```
+---
+| Sum Type (is-a or)
+
+- If A is a B or C, we write
+
+```
+sealed trait A
+final case class B() extends A
+final case class C() extends A
+```
+---
+| Algebraic Data Type
+
+- A composite type, i.e., a type formed by combining other types
+- Two common classes of algebraic types are
+  - product types (i.e., tuples and records)
+  - sum types, also called tagged or disjoint unions or variant types
+- Code follows immediately from structure of the data
+---
+| Missing Pattern?
+
+```
+|       |      And     |    Or    |
+|-------|--------------|----------|
+| Is-a  |              | Sum Type |
+| Has-a | Product Type |          |
+```
+
+- The “is-a and” pattern means that A is a B and C.
+  - This pattern is in some ways the inverse of the sum type pattern,
+    and we can implement it as below.
+  - We use it to share implementation across several classes
+
+```
+trait B
+trait C
+trait A extends B with C
+```
+---
+| Missing Pattern?
+
+```
+|       |      And     |    Or    |
+|-------|--------------|----------|
+| Is-a  |              | Sum Type |
+| Has-a | Product Type |          |
+```
+
+- The “has-a or” patterns means that A has a B or C
+  - We can say that A has a d of type D, where D is a B or C
+
+```
+trait A {
+  def d: D
+}
+sealed trait D
+final case class B() extends D
+final case class C() extends D
+```
+
+- We can also implement "has-a or" as A is a D or E,
+  and D has a B and E has a C.
+
+```
+sealed trait A
+final case class D(b: B) extends A
+final case class E(c: C) extends A
+```
+---
+- A website visitor is:
+  - logged in user; or
+  - anonymous
+- A logged in user has:
+  - an ID; and
+  - an email address
+- An anonymous has:
+  - an ID
+---
+```
+type Id = Int
+type Email = String
+
+sealed trait Visitor {
+  val id: Id
+}
+final case class Anonymous(id: Id)  extends Visitor
+final case class User(id: Id, email: Email)  extends Visitor
+```
+---
+- A calculation is a success or failure
+- A success has an value.
+- A failure has an error message.
+---
+```
+sealed trait Calculation
+final case class Success(value: Int) extends Calculation
+final case class Failure(msg: String) extends Calculation
+```
+---
+| Type Class Pattern
+
+- A type class is a trait with at least one type variable.
+- The type variables specify the concrete types
+  the type class instances are defined for.
+- Methods in the trait usually use the type variables.
+
+```
+trait ExampleTypeClass[A] {
+  def doSomething(in: A): Foo
+}
+```
+---
+| Functional Programming
+
+- Programming paradigm
+- Rooted in Mathematics
+- Language independent
+- Key principle is that all computation is mathematical function
+- Mathematical functions map from input to output
+---
+| Functions
+
+```
+def f(x: Int) = x * 2
+```
+--
+
+```
+def g(f: Int => Int)(x: Int, y: Int) = f(x) + f(y)
+```
+--
+
+```
+def h(x: Int) = if (x % 2 == 0) 1 else 0
+```
+---
+| Functional Programming
+
+- Key principles
+  - We can't change the input of functions.
+  - We can't change the variable (Immutability).
+  - Programming without variable assignments.
+
+---
+| Functional Programming
+
+- We try to find abstractions in programming, we derived from mathematics
+  - Monoids
+  - Functors
+  - Monands
+- We try to map mathematics to programming:
+  - We have types - Int, Double, Long, or custom data types.
+  - We can do algebra of types by characterizing operations the types support
+    and the laws of these operations.
+---
+| Monoids
+
+- Pure algebraic structure, only defined by its algebra
+--
+
+- Monoid law:
+  - A Monoid contains T type.
+  - A Monoid contains one associative operation. Any x, y and z of type T,
+    op(op(x, y), z) == op(x, op(y, z)).
+  - A Monoid must have an identity element - zero. Operations will always return
+    other element. op(x, zero) == x and op(zero, x) == x.
+---
+| Monoids
+
+- Examples: string concatenation, sum, product, list.
+--
+
+- Integer addition:
+--
+  - Type: Int.
+  - Associative operation: add. add(add(3, 2), 1) == add(3, add(2, 1)).
+  - Identity element: 0. add(3, 0) == add(0, 3) == 0.
+---
+| Monoids
+
+- Integer multiplication:
+--
+  - Type: Int.
+  - Associative operation: multiply. multiply(multiply(3, 2), 1) == multiply(3, multiply(2, 1)).
+  - Identity element: 1. multiply(3, 1) == multiply(1, 3) == 3.
+---
+| Monoids
+
+```
+trait Monoid[T] {
+  def op(l: T, r: T): T
+  def zero: T
+}
+```
+---
+| Monoids
+
+- How to implement an intAddition, intMultiplication and stringConcatenation?
+--
+
+```
+val intAddition = new Monoid[Int] {
+  val zero: Int = 0
+  override def op(l: Int, r: Int) = l + r
+}
+```
+--
+
+```
+val intMultiplication = new Monoid[Int] {
+  val zero: Int = 1
+  override def op(l: Int, r: Int) = l * r
+}
+```
+--
+
+```
+val stringConcatenation: Monoid[String] = new Monoid[String] {
+  val zero: String = ""
+  override def op(l: String, r: String) = l + r
+}
+```
+---
+| Monoids
+
+- How can we use Monoids for parallel computation?
+- They are naturally used with lists and collections.
+--
+
+```
+def foldLeft[B](z: B)(f: (B, A) => B): B
+
+def foldRight[B](z: B)(f: (A, B) => B): B
+```
+--
+
+- If A and B are of same type, we end up with these:
+
+```
+def foldLeft[A](z: A)(f: (A, A) => A): A
+
+def foldRight[A](z: A)(f: (A, A) => A): A
+```
+---
+| Monoids
+
+```
+val ints = (1 to 10).toList
+
+val product = ints.foldLeft(intMultiplication.zero)(intMultiplication.op)
+println(product)
+
+val sum = ints.foldRight(intAddition.zero)(intAddition.op)
+```
+---
+| Monoids
+
+- More generic functions to fold a list
+
+```
+def fold[T](list: List[T])(m: Monoid[T]): T =
+  list.foldLeft(m.zero)(m.op)
+
+fold(ints)(intAddition)
+```
+---
+| Functors
+
+- Monoids as a way to abstract some computations.
+- Functors come from Category Theory in Mathematics to abstract specific kind
+  of computations.
+- Functors is a class that has a map method and conform the functor laws.
+- map method for a functor of F[T] type takes a function from T to Y as
+  parameter and returns F[Y] as a result.
+---
+| Functors
+
+- Functor law
+  - Identity: When identity function is mapped over some data, the identity
+    function does not change it. map(x)(i => i) == x.
+  - Composition: Multiple maps compose together and makes no difference.
+    x.map(i => y(i)).map(i => z(i)) or x.map(i => z(y(i)))
+  - The map function preserve the data structure. It does not add or remove
+    elements, change the order, etc.
+---
+| Functors
+
+```
+trait Functor[F[_]] {
+  def map[T, Y](l: F[T])(f: T => Y): F[Y]
+}
+```
+---
+| Functors
+
+```
+val seqFunctor = new Functor[Seq] {
+  override def map[T, Y](l: Seq[T])(f: T => Y): Seq[Y] = l.map(f)
+}
+```
+--
+
+```
+val heroes = Seq("Flash", "Spiderman", "Ironman")
+val mappings = Map("Flash" -> "Barry Allen",
+  "Spiderman" -> "Peter Parker",
+  "Ironman" -> "Tony Stark")
+
+seqFunctor.map(heroes)(i => (i, mappings(i)))
+```
+---
+| Monads
+
+- Monoids allow us to implement generic functionality with certainty as we
+  expect certain conditions hold.
+- If Monoid law is broken, we have no way to expect how they will behave.
+- Monads are functors that have unit and and flatMap methods
+--
+
+```
+def flatten[T](x: F[F[T]]): M[T]
+def flatMap[T](f: Y => Monad[T]): Monad[T] = flatten(map(f))
+def unit[T](value: T): Moand[T]
+
+def map[T](f: Y => Monad[T]): Monad[T] = flatMap { x => unit(f(x)) }
+```
+---
+| Monads
+
+- Monad law
+  - Identity law: map and flatMap over identity function does not change the data:
+    map(x)(i => i) == x and x.flatMap(i => unit(i)) == x. unit method is like
+    zero element in Monoids.
+  - Unit law: unit(x).flatMap { y => f(y) } == f(y) and
+    unit(x).map { y => f(x) } == unit(f(x))
+  - Composition: Multiple maps and flatMap must be composed together.
+    x.map(i => y(i)).map(i => z(i)) === x.map(i => z(y(i)))
+    x.flatMap(i => y(i)).flatMap(i => z(i)) == x.flatMap(i => y(i).flatMap(j => z(j)))
+---
+| Monads
+
+- Monad law
+  - Zero identity: No matter what we apply to it, it still going to be zero.
+    zero.map(i => f(i)) == zero
+    zero.flatMap(i => f(i)) == zero
+  - Reverse zero: If we replace everything with zero, our result will be zero.
+    x.flatMap(i => zero) == zero
+  - Communtativity: We can do kinda addition with zero monand will be communtative.
+    x plus zero == zero plus x == x
+---
+| Monads
+
+```
+trait Functor[T] {
+  def map[Y](f: Y => Monad[T]): Monad[Y]
+}
+
+trait Monad[T] extends Functor[T] {
+  def unit[Y](value: Y): Monad[Y]
+  def flatMap[Y](f: T => Monad[Y]): Monad[Y]
+  override def map[Y](f: T => Monad[Y]): Monad[Y] = flatMap(i => unit(f(i)))
+}
+```
+---
+| Monads
+
+```
+sealed trait Option[A] extends Monad[A]
+
+case class Some[A](a: A) extends Option[A] {
+  override def unit[Y](value: Y): Monad[Y] = Some(value)
+  override def flatMap[Y](f: A => Monad[Y]): Monad[Y] = f(a)
+}
+
+case class None[A]() extends Option[A] {
+  override def unit[Y](value: Y): Monad[Y] = None()
+  override def flatMap[Y](f: A => Monad[Y]): Monad[Y] = None()
+}
+```
+---
+| References
+
+- Scala Puzzlers
+- Programming in Scala
+- Essential Scala
+- Scala Design Patterns
+---
+| Thank you for coming!
+
+| Q&A/Comments?/Suggestions?
