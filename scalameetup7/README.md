@@ -9,6 +9,7 @@ REPLesent is a neat little tool to build presentations
 using the Scala REPL.
 
 Thank you Ignacio Cavero for introducing it to me last week.
+
 ---
 | Collections Recap
 
