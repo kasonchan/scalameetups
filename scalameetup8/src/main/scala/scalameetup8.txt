@@ -291,7 +291,7 @@ def h(x: Int) = if (x % 2 == 0) 1 else 0
 ```
 trait Monoid[T] {
   def op(l: T, r: T): T
-  def zero: T
+  def identity: T
 }
 ```
 ---
@@ -302,7 +302,7 @@ trait Monoid[T] {
 
 ```
 val intAddition = new Monoid[Int] {
-  val zero: Int = 0
+  val identity: Int = 0
   override def op(l: Int, r: Int) = l + r
 }
 ```
@@ -310,7 +310,7 @@ val intAddition = new Monoid[Int] {
 
 ```
 val intMultiplication = new Monoid[Int] {
-  val zero: Int = 1
+  val identity: Int = 1
   override def op(l: Int, r: Int) = l * r
 }
 ```
@@ -318,7 +318,7 @@ val intMultiplication = new Monoid[Int] {
 
 ```
 val stringConcatenation: Monoid[String] = new Monoid[String] {
-  val zero: String = ""
+  val identity: String = ""
   override def op(l: String, r: String) = l + r
 }
 ```
@@ -349,10 +349,10 @@ def foldRight[A](z: A)(f: (A, A) => A): A
 ```
 val ints = (1 to 10).toList
 
-val product = ints.foldLeft(intMultiplication.zero)(intMultiplication.op)
+val product = ints.foldLeft(intMultiplication.identity)(intMultiplication.op)
 println(product)
 
-val sum = ints.foldRight(intAddition.zero)(intAddition.op)
+val sum = ints.foldRight(intAddition.identity)(intAddition.op)
 ```
 ---
 | Monoids
@@ -361,7 +361,7 @@ val sum = ints.foldRight(intAddition.zero)(intAddition.op)
 
 ```
 def fold[T](list: List[T])(m: Monoid[T]): T =
-  list.foldLeft(m.zero)(m.op)
+  list.foldLeft(m.identity)(m.op)
 
 fold(ints)(intAddition)
 ```
