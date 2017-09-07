@@ -13,6 +13,8 @@ These documents should be easily follow and test and try them out.
   - [Scala Scripting, ScalaStyle and Scalafmt](https://github.com/kasonchan/scalameetups/blob/master/scalameetup2/README.md)
   - [Scala Basics Tour](https://github.com/kasonchan/scalameetups/blob/master/scalameetup3/README.md)
   - [Scala Basics Tour - Collections](https://github.com/kasonchan/scalameetups/blob/master/scalameetup6-slides/README.md)
+- Functional Programming 
+  - [Functional Programming (FP) (in Scala)](https://github.com/kasonchan/scalameetups/blob/master/scalameetup8/README.md)
 - Akka
   - Actors
     - [Akka Actors Basics Tour I](https://github.com/kasonchan/scalameetups/blob/master/scalameetup4-slides/README.md)
