@@ -1,4 +1,4 @@
-| More Traits and FP (in Scala)
+| Functional Programming (FP) (in Scala)
 
 ---
 This presentation slides are built with REPLesent!
