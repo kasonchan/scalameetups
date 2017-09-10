@@ -1,0 +1,215 @@
+| Functional Patterns
+
+---
+This presentation slides are built with REPLesent!
+
+REPLesent is a neat little tool to build presentations
+using the Scala REPL.
+---
+Functional Patterns
+
+- Tail Recursion
+- Mutual Recursion
+- Filter-Map-Reduce
+- Chain of Operations
+- Function Builder
+- Memoization
+
+---
+Tail Recursion
+
+--
+```
+// Imperative sum
+def sum(upTo: Int): Int = {
+  var sum = 0
+  for (i <- 0 to upTo)
+    sum = sum + i
+  sum
+}
+```
+--
+
+```
+// Recursive sum
+def recursiveSum(upTo: Int): Int = {
+  if (upTo == 0) 0
+  else upTo + sum(upTo - 1)
+}
+```
+
+- Each recursive call leads to another frame on program's call stack.
+---
+Tail Recursion
+
+```
+// Tail recursive sum
+import scala.annotation.tailrec
+
+@tailrec
+def tailRecursiveSum(upTo: Int, sum: Int): Int = {
+  if (upTo == 0) sum
+  else sumTail(upTo - 1, sum + upTo)
+}
+```
+
+- Tail recursion is a special form of recursion.
+- Tail call optimization (TCO) optimizes to use a single frame on the stack.
+- @tailrec is a method annotation which verifies that the method
+  will be compiled with tail call optimization.
+- If @tailrec is present, the compiler will issue an error if the method
+  cannot be optimized into a loop.
+---
+Tail Recursion
+
+```
+case class Person(firstNames: String, lastNames: String)
+```
+--
+
+```
+import scala.annotation.tailrec
+
+def makePeople(firstNames: Seq[String], lastNames: Seq[String]): Seq[Person] = {
+  @tailrec
+  def helper(firstNames: Seq[String], lastNames: Seq[String],
+             people: Vector[Person]): Seq[Person] = {
+    if (firstNames.isEmpty) people
+    else {
+      val newPerson = Person(firstNames.head, lastNames.head)
+      helper(firstNames.tail, lastNames.tail, people :+ newPerson)
+    }
+  }
+
+  helper(firstNames, lastNames, Vector[Person]())
+}
+```
+--
+
+```
+val firstNames = Seq("Harry", "Ron", "Hermione", "Draco")
+val lastNames = Seq("Potter", "Weasley", "Granger", "Malfoy")
+
+makePeople(firstNames, lastNames)
+```
+---
+Tail Recursion
+
+Intent to repeat a computation without using mutable state and without
+overflowing the stack
+---
+Mutual Recursion
+
+```
+def isOdd(n: Long): Boolean = if (n == 0) false else isEven(n - 1)
+
+def isEven(n: Long): Boolean = if (n == 0) true else isOdd(n - 1)
+
+isOdd(100001)
+```
+--
+
+```
+import scala.util.control.TailCalls.TailRec
+import scala.util.control.TailCalls.done
+import scala.util.control.TailCalls.tailcall
+
+def tailRecursiveIsOdd(n: Long): TailRec[Boolean] =
+  if (n == 0) done(false) else tailcall(tailRecursiveIsEven(n - 1))
+
+def tailRecursiveIsEven(n: Long): TailRec[Boolean] =
+  if (n == 0) done(true) else tailcall(tailRecursiveIsOdd(n - 1))
+
+tailRecursiveIsOdd(100001).result
+```
+---
+Mutual Recursion
+
+Intent to use mutually recursive functions to express algorithms, such as
+walking tree-like data structures, recursive descent parsing and state machine
+manipulations
+---
+Filter-Map-Reduce
+
+Calculate a total discount on a sequence of prices, where any price twenty euros
+or over is discounted at ten percent, and any under twenty is full price.
+
+```
+val prices = Vector(20.0, 4.5, 50.0, 15.75, 30.0, 3.5)
+```
+--
+
+```
+def calculateDiscount(prices: Seq[Double]): Double = {
+  prices filter (price => price >= 20.0) map
+    (price => price * 0.10) reduce
+      ((total, price) => total + price)
+}
+
+calculateDiscount(prices)
+```
+---
+Filter-Map-Reduce
+
+Intent to manipulate a sequence (list, vector, ...) declaratively using filter,
+map and reduce to produce a new one. It gives us a more declarative way to do
+sequence manipulations.
+---
+Chain of Operations
+
+Intent to chain a sequence of computations togethers that allows us to work
+cleanly with immutable data without storing lots of temporary results.
+
+https://docs.scala-lang.org/overviews/collections/introduction.html
+---
+Function Builder (Higher-Order functions)
+
+```
+def discount(percent: Double): (Double) => Double = {
+  if (percent < 0.0 || percent > 100.0) (originalPrice: Double) => originalPrice
+  else (originalPrice: Double) => originalPrice - (originalPrice * percent / 100)
+}
+
+discount(200)(100)
+
+discount(50)(200)
+```
+--
+
+```
+val twentyFivePercentOff = discount(25)
+
+Vector(100.0, 25.0, 50.0, 25.0) map twentyFivePercentOff sum
+
+val fiftyPercentOff = discount(50)
+
+Vector(100.0, 25.0, 50.0, 25.0) map fiftyPercentOff sum
+```
+---
+Function Builder (Higher-Order functions)
+
+```
+def taxForState(amount: Double, state: Symbol) = state match {
+  case ('NY) => amount * 0.0645
+  case ('PA) => amount * 0.045
+}
+
+val nyTax = taxForState(_: Double, 'NY)
+val paTax = taxForState(_: Double, 'PA)
+
+nyTax(100)
+paTax(20)
+```
+---
+Function Builder (Higher-Order functions)
+
+Intent to create a function that itself create functions, allowing us to
+synthesize behaviors on the fly
+---
+References
+
+- Functional Programming Patterns in Scala and Clojure
+---
+| Thank you for coming!
+
+| Q&A/Comments?/Suggestions?
