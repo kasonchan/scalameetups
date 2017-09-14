@@ -80,6 +80,14 @@ val bigEmployee: Future[EmployeeWithRole] =
   can make our code more readable. So if you find yourself passing the same
   value several times in quick succession, they can help hide the duplication.
 ---
+Configuration
+
+- Like other Akka modules, Akka HTTP is can be configured via Typesafe Config.
+- We can provide an application.conf file application-specific settings that is
+  differ from the default one.
+- http://doc.akka.io/docs/akka-http/current/scala/http/configuration.html
+
+---
 Akka HTTP
 
 - Today session we will focus on The high-level, routing API of Akka HTTP
@@ -87,7 +95,9 @@ Akka HTTP
 - Each route is composed of one or more level of \yDirective\ss that narrows
   down to handling one specific type of request.
 ---
-| References
+Demo
+---
+References
 
 - http://doc.akka.io/docs/akka-http/current/scala/http/index.html
 ---
