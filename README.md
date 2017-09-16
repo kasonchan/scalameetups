@@ -20,6 +20,8 @@ These documents should be easily follow and test and try them out.
   - Actors
     - [Akka Actors Basics Tour I](https://github.com/kasonchan/scalameetups/blob/master/scalameetup4-slides/README.md)
     - [Akka Actors Basics Tour II](https://github.com/kasonchan/scalameetups/blob/master/scalameetup5-slides/README.md)
+  - HTTP
+    - [Build a REST API](https://github.com/kasonchan/scalameetups/blob/master/scalameetup10/README.md)
 - Spark
 - Web App
 - Android App
