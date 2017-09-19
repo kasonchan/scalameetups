@@ -1,11 +1,14 @@
 | Functional Patterns
 
 ---
+
 This presentation slides are built with REPLesent!
 
 REPLesent is a neat little tool to build presentations
 using the Scala REPL.
+
 ---
+
 Functional Patterns
 
 - Tail Recursion
@@ -16,6 +19,7 @@ Functional Patterns
 - Memoization
 
 ---
+
 Tail Recursion
 
 --
@@ -39,7 +43,9 @@ def recursiveSum(upTo: Int): Int = {
 ```
 
 - Each recursive call leads to another frame on program's call stack.
+
 ---
+
 Tail Recursion
 
 ```
@@ -59,7 +65,9 @@ def tailRecursiveSum(upTo: Int, sum: Int): Int = {
   will be compiled with tail call optimization.
 - If @tailrec is present, the compiler will issue an error if the method
   cannot be optimized into a loop.
+
 ---
+
 Tail Recursion
 
 ```
@@ -93,11 +101,14 @@ val lastNames = Seq("Potter", "Weasley", "Granger", "Malfoy")
 makePeople(firstNames, lastNames)
 ```
 ---
+
 Tail Recursion
 
 Intent to repeat a computation without using mutable state and without
 overflowing the stack
+
 ---
+
 Mutual Recursion
 
 ```
@@ -122,13 +133,17 @@ def tailRecursiveIsEven(n: Long): TailRec[Boolean] =
 
 tailRecursiveIsOdd(100001).result
 ```
+
 ---
+
 Mutual Recursion
 
 Intent to use mutually recursive functions to express algorithms, such as
 walking tree-like data structures, recursive descent parsing and state machine
 manipulations
+
 ---
+
 Filter-Map-Reduce
 
 Calculate a total discount on a sequence of prices, where any price twenty euros
@@ -148,20 +163,26 @@ def calculateDiscount(prices: Seq[Double]): Double = {
 
 calculateDiscount(prices)
 ```
+
 ---
+
 Filter-Map-Reduce
 
 Intent to manipulate a sequence (list, vector, ...) declaratively using filter,
 map and reduce to produce a new one. It gives us a more declarative way to do
 sequence manipulations.
+
 ---
+
 Chain of Operations
 
 Intent to chain a sequence of computations togethers that allows us to work
 cleanly with immutable data without storing lots of temporary results.
 
 https://docs.scala-lang.org/overviews/collections/introduction.html
+
 ---
+
 Function Builder (Higher-Order functions)
 
 ```
@@ -185,7 +206,9 @@ val fiftyPercentOff = discount(50)
 
 Vector(100.0, 25.0, 50.0, 25.0) map fiftyPercentOff sum
 ```
+
 ---
+
 Function Builder (Higher-Order functions)
 
 ```
@@ -200,16 +223,22 @@ val paTax = taxForState(_: Double, 'PA)
 nyTax(100)
 paTax(20)
 ```
+
 ---
+
 Function Builder (Higher-Order functions)
 
 Intent to create a function that itself create functions, allowing us to
 synthesize behaviors on the fly
+
 ---
+
 References
 
 - Functional Programming Patterns in Scala and Clojure
+
 ---
+
 | Thank you for coming!
 
 | Q&A/Comments?/Suggestions?
