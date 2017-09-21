@@ -1,16 +1,16 @@
 case class Person(firstNames: String, lastNames: String)
 
 import scala.annotation.tailrec
-import scala.util.{Success, Try}
 
 def makePeople(firstNames: Seq[String], lastNames: Seq[String]): Seq[Person] = {
   @tailrec
   def helper(firstNames: Seq[String], lastNames: Seq[String],
              people: Vector[Person]): Seq[Person] = {
-    if (firstNames.isEmpty) people
-    else {
-      val newPerson = Person(firstNames.head, lastNames.head)
-      helper(firstNames.tail, lastNames.tail, people :+ newPerson)
+    firstNames match {
+      case Seq() => people
+      case _ =>
+        val newPerson = Person(firstNames.head, lastNames.head)
+        helper(firstNames.tail, lastNames.tail, people :+ newPerson)
     }
   }
 

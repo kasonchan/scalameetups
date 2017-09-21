@@ -56,6 +56,21 @@ def recursiveSum(upTo: Int): Int = {
 
 ---
 
+```
+// Recursive sum
+def recursiveSum(upTo: Int): Int = {
+  upTo match {
+    case 0 => 0
+    case _: Int => upTo + sum(upTo - 1)
+  }
+}
+```
+--
+
+- Each recursive call leads to another frame on program's call stack.
+
+---
+
 Tail Recursion
 
 ```
@@ -66,6 +81,23 @@ import scala.annotation.tailrec
 def tailRecursiveSum(upTo: Int, sum: Int): Int = {
   if (upTo == 0) sum
   else sumTail(upTo - 1, sum + upTo)
+}
+```
+
+---
+
+Tail Recursion
+
+```
+// Tail recursive sum
+import scala.annotation.tailrec
+
+@tailrec
+def tailRecursiveSum(upTo: Int, sum: Int): Int = {
+  upTo match {
+    case 0 => sum
+    case _: Int => sumTail(upTo - 1, sum + upTo)
+  }
 }
 ```
 
@@ -109,10 +141,11 @@ def makePeople(firstNames: Seq[String], lastNames: Seq[String]): Seq[Person] = {
   @tailrec
   def helper(firstNames: Seq[String], lastNames: Seq[String],
              people: Vector[Person]): Seq[Person] = {
-    if (firstNames.isEmpty) people
-    else {
-      val newPerson = Person(firstNames.head, lastNames.head)
-      helper(firstNames.tail, lastNames.tail, people :+ newPerson)
+    firstNames match {
+      case Seq() => people
+      case _ =>
+        val newPerson = Person(firstNames.head, lastNames.head)
+        helper(firstNames.tail, lastNames.tail, people :+ newPerson)
     }
   }
 
@@ -194,6 +227,17 @@ val discountPrices = calculateDiscount(prices)
 
 ---
 
+```
+def calculateDiscount(prices: Seq[Double]): Double = {
+  (prices filter (price => price >= 20.0) map
+    (price => price * 0.10))sum
+}
+
+val discountPrices = calculateDiscount(prices)
+```
+
+---
+
 Filter-Map-Reduce
 
 Intent to manipulate a sequence (list, vector, ...) declaratively using filter,
@@ -250,7 +294,7 @@ catVideosSum(videos)
 ```
 val o1 = Some(42)
 val o2 = Some(8)
-for { v1 <- o1; v2 <- o2) yield (v1 + v2)
+for { v1 <- o1; v2 <- o2 } yield (v1 + v2)
 ```
 --
 
@@ -335,7 +379,7 @@ An expression always evaluates to the same result in any context.
 Pure Functions?
 
 --
-Pure functions always return the same value for given arguments.
+Pure functions always return the same value for given arguments without side effects.
 
 ---
 
