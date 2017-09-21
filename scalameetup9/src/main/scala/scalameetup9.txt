@@ -307,7 +307,7 @@ for { v1 <- o1; v3 <- o3 } yield (v1 + v3)
 
 Chain of Operations
 
-Intent to chain a sequence of computations togethers that allows us to work
+Intent to chain a sequence of computations together that allows us to work
 cleanly with immutable data without storing lots of temporary results.
 
 https://docs.scala-lang.org/overviews/collections/introduction.html
