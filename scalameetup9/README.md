@@ -121,6 +121,7 @@ Tail Recursion
 Scenario: We are given a list of first names and a list of last names. How can we
 form a list of people tail recursively, assuming that the indices matches from
 the first names and last names.
+
 --
 
 ```
@@ -153,11 +154,10 @@ def makePeople(firstNames: Seq[String], lastNames: Seq[String]): Seq[Person] = {
 
   helper(firstNames, lastNames, Vector[Person]())
 }
-```
---
 
 val people = makePeople(firstNames, lastNames)
 ```
+
 ---
 
 Tail Recursion
@@ -176,6 +176,7 @@ def isEven(n: Long): Boolean = if (n == 0) true else isOdd(n - 1)
 
 isOdd(100001)
 ```
+
 --
 
 ```
@@ -209,11 +210,11 @@ price.
 
 ```
 val prices = Vector(20.0, 4.5, 50.0, 15.75, 30.0, 3.5)
-```
 
 def calculateDiscount(prices: Seq[Double]): Double = ???
 
 val discountPrices = calculatedDiscount(prices)
+```
 
 ---
 
@@ -254,11 +255,15 @@ Scenario: We are given a list of names and wish to get their initials.
 
 ```
 val names = List("Viggo Mortensen", "Orlando Bloom", "Elijah Wood", "Ian McKellen", "Billy Boyd")
-```
+
 val initials = ???
+```
+
 --
 
+```
 val initials = names map (_.split(" ") map (_.toUpperCase) map (_.charAt(0)) mkString)
+```
 
 ---
 
@@ -276,8 +281,9 @@ val v3 = Video("Lord of the Rings", "Fantasy Fiction", 500)
 val v4 = Video("Fuzzy McMittens Live At the Apollo", "cat", 200)
 
 val videos = Seq(v1, v2, v3, v4)
-```
+
 def catVideosSum(videos: Seq[Video]): Int = ???
+```
 
 ---
 
@@ -298,6 +304,7 @@ val o1 = Some(42)
 val o2 = Some(8)
 for { v1 <- o1; v2 <- o2 } yield (v1 + v2)
 ```
+
 --
 
 ```
@@ -331,6 +338,7 @@ discount(200)(100)
 
 discount(50)(200)
 ```
+
 --
 
 ```
@@ -389,11 +397,12 @@ Scenario: We are given a key and we need to find the value of the key from a map
 
 ```
 val maps = Map(42 -> "foo", 12 -> "bar", 1 -> "baz")
-```
 
 def lookup(key: Int) = ???
+```
 
 --
+
 ```
 def lookup(key: Int): Option[String] = maps.get(key)
 
@@ -470,6 +479,7 @@ val integers = Stream.from(0)
 ```
 
 --
+
 ```
 val someIntegers = integers take 5
 
