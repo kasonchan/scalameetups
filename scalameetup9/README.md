@@ -206,6 +206,7 @@ manipulations
 Scenario: Calculate a total discount on a sequence of prices, where any price
 twenty euros or over is discounted at ten percent, and any under twenty is full
 price.
+
 --
 
 ```
