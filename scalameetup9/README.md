@@ -129,11 +129,11 @@ val firstNames = Seq("Harry", "Ron", "Hermione", "Draco")
 val lastNames = Seq("Potter", "Weasley", "Granger", "Malfoy")
 
 case class Person(firstNames: String, lastNames: String)
-```
 
 def makePeople(firstNames: Seq[String], lastNames: Seq[String]) = ???
 
 val people = makePeople(firstNames, lastNames)
+```
 
 ---
 
@@ -383,12 +383,15 @@ synthesize behaviors on the fly
 Referential Transparency?
 
 --
+
 An expression always evaluates to the same result in any context.
 
 --
+
 Pure Functions?
 
 --
+
 Pure functions always return the same value for given arguments without side effects.
 
 ---
