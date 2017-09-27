@@ -1,3 +1,5 @@
+# Functional Patterns (in Scala)
+
 | Functional Patterns (in Scala)
 
 ---
@@ -119,6 +121,7 @@ Tail Recursion
 Scenario: We are given a list of first names and a list of last names. How can we
 form a list of people tail recursively, assuming that the indices matches from
 the first names and last names.
+
 --
 
 ```
@@ -126,11 +129,11 @@ val firstNames = Seq("Harry", "Ron", "Hermione", "Draco")
 val lastNames = Seq("Potter", "Weasley", "Granger", "Malfoy")
 
 case class Person(firstNames: String, lastNames: String)
-```
 
 def makePeople(firstNames: Seq[String], lastNames: Seq[String]) = ???
 
 val people = makePeople(firstNames, lastNames)
+```
 
 ---
 
@@ -151,11 +154,10 @@ def makePeople(firstNames: Seq[String], lastNames: Seq[String]): Seq[Person] = {
 
   helper(firstNames, lastNames, Vector[Person]())
 }
-```
---
 
 val people = makePeople(firstNames, lastNames)
 ```
+
 ---
 
 Tail Recursion
@@ -174,6 +176,7 @@ def isEven(n: Long): Boolean = if (n == 0) true else isOdd(n - 1)
 
 isOdd(100001)
 ```
+
 --
 
 ```
@@ -203,15 +206,16 @@ manipulations
 Scenario: Calculate a total discount on a sequence of prices, where any price
 twenty euros or over is discounted at ten percent, and any under twenty is full
 price.
+
 --
 
 ```
 val prices = Vector(20.0, 4.5, 50.0, 15.75, 30.0, 3.5)
-```
 
 def calculateDiscount(prices: Seq[Double]): Double = ???
 
 val discountPrices = calculatedDiscount(prices)
+```
 
 ---
 
@@ -252,11 +256,15 @@ Scenario: We are given a list of names and wish to get their initials.
 
 ```
 val names = List("Viggo Mortensen", "Orlando Bloom", "Elijah Wood", "Ian McKellen", "Billy Boyd")
-```
+
 val initials = ???
+```
+
 --
 
+```
 val initials = names map (_.split(" ") map (_.toUpperCase) map (_.charAt(0)) mkString)
+```
 
 ---
 
@@ -274,8 +282,9 @@ val v3 = Video("Lord of the Rings", "Fantasy Fiction", 500)
 val v4 = Video("Fuzzy McMittens Live At the Apollo", "cat", 200)
 
 val videos = Seq(v1, v2, v3, v4)
-```
+
 def catVideosSum(videos: Seq[Video]): Int = ???
+```
 
 ---
 
@@ -296,6 +305,7 @@ val o1 = Some(42)
 val o2 = Some(8)
 for { v1 <- o1; v2 <- o2 } yield (v1 + v2)
 ```
+
 --
 
 ```
@@ -329,6 +339,7 @@ discount(200)(100)
 
 discount(50)(200)
 ```
+
 --
 
 ```
@@ -373,12 +384,15 @@ synthesize behaviors on the fly
 Referential Transparency?
 
 --
+
 An expression always evaluates to the same result in any context.
 
 --
+
 Pure Functions?
 
 --
+
 Pure functions always return the same value for given arguments without side effects.
 
 ---
@@ -387,11 +401,12 @@ Scenario: We are given a key and we need to find the value of the key from a map
 
 ```
 val maps = Map(42 -> "foo", 12 -> "bar", 1 -> "baz")
-```
 
 def lookup(key: Int) = ???
+```
 
 --
+
 ```
 def lookup(key: Int): Option[String] = maps.get(key)
 
@@ -468,6 +483,7 @@ val integers = Stream.from(0)
 ```
 
 --
+
 ```
 val someIntegers = integers take 5
 
@@ -551,3 +567,29 @@ References
 | Thank you for coming!
 
 | Q&A/Comments?/Suggestions?
+
+--- 
+
+This presentation is built with [REPLesent](https://github.com/marconilanna/REPLesent).
+
+To run the slides, first create the follow alias:
+
+```
+alias REPLesent='scala -Dscala.color -language:_ -nowarn -i REPLesent.scala'
+```
+
+Open the REPL and enter the statements below to start the presentation:
+
+```
+$ REPLesent
+Welcome to Scala 2.12.3 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_65).
+Type in expressions for evaluation. Or try :help.
+
+scala> val replesent = REPLesent(intp=$intp)
+replesent: REPLesent = REPLesent(0,0,scalameetup7.txt,true,true,scala.tools.nsc.interpreter.ILoop$ILoopInterpreter@38d308e7)
+
+scala> import replesent._
+import replesent._
+
+scala> f
+```

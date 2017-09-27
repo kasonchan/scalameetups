@@ -16,6 +16,7 @@ These documents should be easily follow and test and try them out.
   - [Scala Basics Tour - Classes, Objects and Traits](https://github.com/kasonchan/scalameetups/blob/master/scalameetup7/README.md)
 - Functional Programming 
   - [Functional Programming (FP) (in Scala)](https://github.com/kasonchan/scalameetups/blob/master/scalameetup8/README.md)
+  - [Functional Patterns (in Scala)](https://github.com/kasonchan/scalameetups/blob/master/scalameetup9/README.md)
 - Akka
   - Actors
     - [Akka Actors Basics Tour I](https://github.com/kasonchan/scalameetups/blob/master/scalameetup4-slides/README.md)
