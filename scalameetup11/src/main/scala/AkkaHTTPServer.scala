@@ -1,6 +1,5 @@
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 
 import scala.concurrent.ExecutionContextExecutor
@@ -19,7 +18,7 @@ object AkkaHTTPServer {
   def main(args: Array[String]): Unit = {
     val (host, port) = ("localhost", 9000)
 
-    val routes = new HarryPotterService().routes ~ SwaggerService.routes
+    val routes = new RoutesService().routes ~ SwaggerService.routes
 
     val bindingFuture =
       Http().bindAndHandle(routes, host, port)
