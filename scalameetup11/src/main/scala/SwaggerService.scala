@@ -7,9 +7,11 @@ import io.swagger.models.auth.BasicAuthDefinition
   * @since Sep-2017
   */
 object SwaggerService extends SwaggerHttpService {
-  override val apiClasses = Set(classOf[RoutesService])
+
+  override val apiClasses = Set(classOf[Routes])
   override val host = "localhost:9000"
   override val info = Info(version = "1.0")
   override val securitySchemeDefinitions = Map(
     "basicAuth" -> new BasicAuthDefinition())
+
 }

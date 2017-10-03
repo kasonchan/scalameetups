@@ -19,7 +19,7 @@ object AkkaHTTPServer {
   def main(args: Array[String]): Unit = {
     val (host, port) = ("localhost", 9000)
 
-    val routes = new RoutesService().routes ~ SwaggerService.routes
+    val routes = new Routes().routes ~ SwaggerService.routes
 
     val bindingFuture =
       Http().bindAndHandle(routes, host, port)
