@@ -67,9 +67,9 @@ class Routes {
             complete(TimedProducts(Data.products))
           } ~
             path("product") {
-              get {
-                println("product")
-                complete("product")
+              parameters('id) { (id) =>
+                println(Data.products.filter(_.id == id))
+                complete(TimedProducts(Data.products.filter(_.id == id)))
               } ~
                 post {
                   entity(as[Product]) { product =>
@@ -84,9 +84,7 @@ class Routes {
                         updatedOn = Calendar.getInstance().getTime.getTime
                       )
                     )
-
                     Data.products = Data.products :+ timedProduct
-
                     println(timedProduct)
                     complete(timedProduct)
                   }
