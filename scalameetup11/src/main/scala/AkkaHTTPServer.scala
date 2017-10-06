@@ -28,8 +28,7 @@ object AkkaHTTPServer {
       System.err.println(s"Failed to bind to $host:$port!")
     }
 
-    println("Hello World!")
-    println("This is the Akka HTTP server!")
+    println("Products Store server!")
     println(s"Server online at http://$host:$port/")
 
     StdIn.readLine()
