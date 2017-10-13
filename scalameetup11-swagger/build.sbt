@@ -7,7 +7,7 @@ lazy val root = (project in file(".")).settings(
       scalaVersion := "2.12.3",
       version := "0.0.1"
     )),
-  name := "scalameetup11",
+  name := "scalameetup11-swagger",
   libraryDependencies ++= Seq(
     "com.typesafe.akka" %% "akka-http" % akkaVersion,
     "com.typesafe.akka" %% "akka-http-testkit" % akkaVersion % Test,
