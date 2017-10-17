@@ -18,6 +18,5 @@ lazy val root = (project in file(".")).settings(
     "io.swagger" % "swagger-models" % swaggerVersion,
     "io.swagger" % "swagger-jaxrs" % swaggerVersion,
     "com.github.swagger-akka-http" %% "swagger-akka-http" % "0.11.0",
-    "ch.megard" %% "akka-http-cors" % "0.2.1",
-    "org.apache.ignite" % "ignite-core" % "1.6.0"
+    "ch.megard" %% "akka-http-cors" % "0.2.1"
   ))
