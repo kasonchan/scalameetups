@@ -100,13 +100,255 @@ History commands:
 - Popular testing framework created by Bill Venners
 - Extensive Behavior-Driven Development (BDD) suite with numerous built-in specs
 - Integrated with classic testing frameworks like JUnit and TestNG
-- Provide two assertion dialects - `MustMatchers` and `ShouldMatchers`
+- Provide two assertion dialects - `Matchers - should` and `MustMatchers`
+
+---
+
+[ScalaTest](http://www.scalatest.org/)
+
+```
+libraryDependencies ++= Seq(
+  "org.scalactic" %% "scalactic" % "3.0.4",
+  "org.scalatest" %% "scalatest" % "3.0.4" % "test"
+)
+```
+
+---
+
+Matchers
+
+- Simple matchers
+
+```
+val list = 2 :: 3 :: 4 :: Nil
+list.size should be(3)
+```
+
+---
+
+Scala Regular Expressions
+
+- http://www.scala-lang.org/api/2.12.3/scala/util/matching/Regex.html
+- https://www.tutorialspoint.com/scala/scala_regular_expressions.htm
+
+---
+
+Matchers
+
+- String matchers
+
+```
+val string = """This is a scala meetup about Testing in Scala Basics Tour."""
+string should startWith("This is")
+string should endWith("Basics Tour.")
+string should include("about Testing")
+
+string should startWith regex ("This.is+")
+string should endWith regex ("T.{2}r.")
+string should not include regex("flames?")
+
+string should fullyMatch regex ("""This(.|\n|\S)*Tour.""")
+```
+
+---
+
+Matchers
+
+- Relational operator matchers
+
+```
+val number = 7
+number should be(7)
+number should equal(7)
+number should not equal (12)
+number should be > (3)
+number should be < (3)
+```
+
+---
+
+Matchers
+
+- Floating point matchers
+
+```
+(0.9 - 0.8) should be(0.1 +- .01)
+```
+
+---
+
+Matchers
+
+- Reference matchers
+
+```
+case class Person(first: String, last: String)
+
+val me = Person("kason", "chan")
+val you = me
+
+me should be theSameInstanceAs (you)
+
+val he = Person("Tomas", "Higgens")
+me should not be theSameInstanceAs(he)
+```
+
+---
+
+Matchers
+
+- Collection matchers
+
+```
+val list = 2 :: 3 :: 4 :: Nil
+list.size should be(3)
+list should have size (3)
+list should have length (3)
+list should contain(4)
+list should not contain (5)
+```
+
+--
+
+```
+val maps = Map(1 -> "One", 2 -> "Two", 3 -> "Three")
+maps should contain key (1)
+maps should contain value ("Two")
+maps should not contain key(7)
+```
+
+---
+
+Matchers
+
+- Compound matchers
+
+```
+val list = 2 :: 3 :: 4 :: Nil
+list should ((contain(3)) and not(contain(1)))
+list should ((have length (3)) or have length (2))
+list should (not be (null) and contain(2))
+```
+
+---
+
+Matchers
+
+- Property matchers
+
+```
+case class Person(first: String, last: String, number: Int)
+
+val me = Person("kason", "chan")
+
+me should have(
+  'first ("kason"),
+  'last ("chan"),
+  'number (12)
+)
+```
+
+---
+
+Matchers
+
+- Exception Handling
+
+```
+And("9 / 0 should throw an java.lang.ArithmeticException")
+  intercept[java.lang.ArithmeticException] {
+    9 / 0
+}
+```
+
+---
+
+Informers and GivenWhenThen
+
+```
+describe("Mutable Set") {
+  it("should allow an element to be added") {
+    Given("an empty mutable Set")
+    val testingFrameworks = mutable.Set.empty[String]
+
+    When("an element is added")
+    testingFrameworks += "ScalaTest"
+
+    Then("the Set should have size 1")
+    testingFrameworks.isEmpty shouldBe false
+    testingFrameworks.size should equal(1)
+    testingFrameworks.size should be(1)
+    testingFrameworks should contain("ScalaTest")
+
+    info("That's all for this mutable Set")
+  }
+}
+```
+
+---
+
+Pending test
+
+```
+describe("Pending tests") {
+  t("This test is pending") { pending }
+}
+```
+
+---
+
+Ignore test
+
+```
+describe("Ignore tests") {
+  ignore("This test is ignored") {
+    // Ignored tests
+  }
+}
+```
+
+---
+
+Tagging
+
+```
+describe("Tagged Tests") {
+  it("can be tagged with Tags", Tag("tagged")) {}
+}
+```
+
+---
+
+Run the tests
+
+- Run all tests
+```
+sbt:scalameetup12> test
+```
+
+- Specify the test class name to run only
+```
+sbt:scalameetup12> testOnly FunSpecMustTestSuite
+sbt:scalameetup12> testOnly FunSpecShouldTestSuite
+```
+
+- Specify a tag to include
+```
+sbt:scalameetup12> testOnly FunSpecShouldTestSuite -- -n tagged
+```
+
+- Specify a tag to exclude
+```
+sbt:scalameetup12> testOnly FunSpecShouldTestSuite -- -l tagged
+```
 
 ---
 
 References
 
 - Testing in Scala by Daniel Hinojosa
+- http://www.scalatest.org/user_guide/using_scalatest_with_sbt
+- http://www.scalatest.org/user_guide/using_the_runner#filtering
 
 ---
 
@@ -131,13 +373,11 @@ $ REPLesent
 Welcome to Scala 2.12.3 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_65).
 Type in expressions for evaluation. Or try :help.
 
-scala> val replesent = REPLesent(intp=$intp)
-replesent: REPLesent = REPLesent(0,0,scalameetup7.txt,true,true,scala.tools.nsc.interpreter.ILoop$ILoopInterpreter@38d308e7)
+scala> val replesent = REPLesent(intp=$intp,source="~/scalameetups/scalameetup12/README.md")
+replesent: REPLesent = REPLesent(0,0,~/scalameetups/scalameetup12/README.md,true,true,scala.tools.nsc.interpreter.ILoop$ILoopInterpreter@32e9c3af)
 
 scala> import replesent._
 import replesent._
 
 scala> f
 ```
-No definition found.
-Search the web for "| functional patterns (in scala)" »
