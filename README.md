@@ -19,6 +19,7 @@ These documents should be easily follow and test and try them out.
   - [Functional Patterns (in Scala)](https://github.com/kasonchan/scalameetups/blob/master/scalameetup9/README.md)
 - Testing
   - [Testing in Scala Basics Tour](https://github.com/kasonchan/scalameetups/blob/master/scalameetup12/README.md)
+  - [Testing in Scala Basics Tour Continued](https://github.com/kasonchan/scalameetups/blob/master/scalameetup13/README.md)
 - Akka
   - Actors
     - [Akka Actors Basics Tour I](https://github.com/kasonchan/scalameetups/blob/master/scalameetup4-slides/README.md)
