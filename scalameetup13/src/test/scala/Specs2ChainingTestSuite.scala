@@ -1,10 +1,10 @@
 import org.specs2.Specification
 
 /**
-  * @author kasonchan
+  * @author kason.chan
   * @since Nov-2017
   */
-class Specs2TestSuite1 extends Specification {
+class Specs2ChainingTestSuite extends Specification {
   def is = s2"""
 
  This is my first specification
