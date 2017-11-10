@@ -190,7 +190,92 @@ sbt:scalameetup13> testOnly FunSpecShouldTestSuite -- -l tagged
 
 ---
 
+Get Help from ScalaTest Community
+
+- https://gitter.im/scalatest/scalatest
+
+---
+
 [Specs2](https://etorreborre.github.io/specs2/)
+
+- Testing Framework created by Eric Torreborre
+- Contains different set of matchers, and structuring test
+- Offers DataTable specifications
+- Get Help from Specs2 Community 
+  - https://gitter.im/etorreborre/specs2
+
+---
+
+[Specs2](https://etorreborre.github.io/specs2/)
+
+- Simple matchers i.e. `mustEqual`, ...
+- String matchers 
+  - i.e. `beEqualTo(...).ignoreSpace.ignoreCase`, `startWith`, `endWith`, `have size(...)`, 
+    `beMatching("""B//w{4}n""")`, `=~("""B//w{4}n""")`
+- Relational operator matchers i.e. `=`, `be_<`, `beGreaterThan`, ...
+- Floating point matchers i.e. `beCloseTo(0.1, .01)`, `beCloseTo(0.1, .01)`
+- Reference matchers i.e. `beTheSameAs`
+- Collection matchers i.e. `be empty`, `size`, `length`, `contain`, `haveKey`, `haveValue`, `havePair`
+
+---
+
+- XML Matchers
+
+```
+val TestFrameworks = <frameworks>
+  <framework name="ScalaTest"/>
+  <framework name="Specs2"/>
+  <framework name="ScalaMock"/>
+  <framework name="ScalaCheck"/>
+</frameworks>
+```
+
+--
+
+```
+testFrameworks must be_==(<frameworks>
+      <framework name="ScalaTest"/>
+      <framework name="Specs2"/>
+      <framework name="ScalaMock"/>
+      <framework name="ScalaCheck"/>
+    </frameworks>).ignoreSpace
+```
+
+---
+
+Given/When/Then
+
+- https://etorreborre.github.io/specs2/guide/SPECS2-4.0.0/org.specs2.guide.GivenWhenThenStyle.html
+
+---
+
+[DataTable](https://etorreborre.github.io/specs2/guide/SPECS2-3.0.1/org.specs2.guide.UseDatatables.html)
+
+```
+class DataTableSpec extends Specification with org.specs2.specification.Tables { def is = s2"""
+
+ adding integers should just work in scala ${
+  // the header of the table, with `|` separated strings (`>` executes the table)
+  "a"   | "b" | "c" |>
+   2    !  2  !  4  |                   // an example row
+   1    !  1  !  2  |                   // another example row
+  { (a, b, c) => a + b must_== c }      // the expectation to check on each row
+ }
+"""
+}
+```
+
+---
+
+[Tagging](https://etorreborre.github.io/specs2/guide/SPECS2-3.5/org.specs2.guide.Selection.html)
+
+```
+${tag("feature1", "unit")}
+```
+
+```
+${section("checkin")}
+```
 
 ---
 
@@ -201,6 +286,7 @@ References
 - http://www.scalatest.org/user_guide/using_the_runner#filtering
 - http://www.scalatest.org/user_guide/selecting_a_style
 - http://www.scalatest.org/at_a_glance/FlatSpec
+- https://www.slideshare.net/etorreborre/specs2-from-starters-to-dessert-and-a-look-in-the-kitchen
 
 ---
 
@@ -225,8 +311,8 @@ $ REPLesent
 Welcome to Scala 2.12.3 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_65).
 Type in expressions for evaluation. Or try :help.
 
-scala> val replesent = REPLesent(intp=$intp)
-replesent: REPLesent = REPLesent(0,0,scalameetup7.txt,true,true,scala.tools.nsc.interpreter.ILoop$ILoopInterpreter@38d308e7)
+scala> val replesent = REPLesent(intp=$intp,source="/Users/kason.chan/Documents/workspace/scalameetups/scalameetup13/README.md")
+replesent: REPLesent = REPLesent(0,0,/Users/kason.chan/Documents/workspace/scalameetups/scalameetup13/README.md,true,true,scala.tools.nsc.interpreter.ILoop$ILoopInterpreter@3b80bb63)
 
 scala> import replesent._
 import replesent._
