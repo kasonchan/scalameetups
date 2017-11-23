@@ -1,0 +1,65 @@
+@(user: Option[String])(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+            <!-- Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+            <!-- Title -->
+        @if(user) {
+            <title>user | Messages("application.name")</title>
+        } else {
+            <title>Messages("application.name")</title>
+        }
+
+                <!-- Favicon -->
+            <link rel="shortcut icon" type="image/png"
+            href="@routes.Assets.at("assets/images/favicon.png")">
+
+                <!-- Font -->
+            <link rel='stylesheet' type='text/css'
+            href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' >
+
+                <!-- Script -->
+
+            <script type="text/javascript"
+            src="@routes.Assets.at("javascripts/chat.js")" >
+            </script>
+        </head>
+    <body>
+
+            <!-- Reactive ribbon -->
+        <a href="http://www.reactivemanifesto.org/">
+            <img style="border: 0 ;
+                position: fixed ;
+                right: 0 ;
+                top: 0 ;
+                z-index: 9000"
+            src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-white-right.png">
+        </a>
+
+            <!-- Toolbar -->
+        <div class="toolbar">
+            <a href="/">
+                <img src="@routes.Assets.at("assets/images/favicon.png")" width="80px" height="80px">
+                <span>
+                    <h1>
+                    Messages("application.name")
+                    </h1>
+                </span>
+            </a>
+        </div>
+
+            <!-- Bottom sheet -->
+        <div class="bottom-sheet">
+        @content
+        </div>
+
+        <div class="bottom_sheet_background">
+            <img src="@routes.Assets.at("assets/images/favicon_white.png")">
+        </div>
+
+    </body>
+</html>

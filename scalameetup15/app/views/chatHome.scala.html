@@ -1,0 +1,33 @@
+@(es: Option[String])
+
+@chatFrame(None) {
+
+  <div class="div-msg">Welcome to PlayChat!</div>
+  <div class="div-msg">@es.getOrElse("")</div>
+
+  <div class="div-msg">What is your name?</div>
+  <div class="div-msg">
+    <form method="post" id="user" action="@routes.Chat.user">
+      I'm <input type="text" id="username" name="username" placeholder="PlayChat">
+      <button type="submit" id="submit">Say Hello</button>
+    </form>
+  </div>
+
+  <div id="diverror">Oh please tell me your name :(</div>
+
+  <script type="text/javascript">
+          $(function () {
+
+            // Show error if empty msg
+            $("#user").submit(function () {
+              if ($("#username").val().length === 0) {
+                $("#diverror").show();
+                return false;
+              } else {
+                $("#diverror").hide();
+              }
+            })
+          })
+  </script>
+
+}

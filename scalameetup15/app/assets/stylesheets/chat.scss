@@ -1,0 +1,65 @@
+//@import 'utils/colors';
+//@import 'utils/dimens';
+//@import 'utils/fonts';
+//@import 'structures/toolbar';
+//@import 'components/bottom-sheet';
+//@import 'components/button';
+//@import 'components/msg';
+//
+//body {
+//  font-family: $font-family;
+//  color: $black;
+//  font-size: 14px;
+//  margin: 0;
+//  padding: 0;
+//  -ms-text-size-adjust: 100%;
+//  -webkit-text-size-adjust: 100%;
+//  background-color: $grey-lighten-2;
+//}
+//
+//h1, h2, h3, h4, h5 {
+//  color: $lightBlue;
+//}
+//
+//a:link {
+//  color: $lightBlue;
+//  text-decoration: none;
+//}
+//
+///* Visited link */
+//a:visited {
+//  color: $lightBlue;
+//  text-decoration: none;
+//}
+//
+///* Mouse over link */
+//a:hover {
+//  color: $lightBlue;
+//  text-decoration: none;
+//}
+//
+///* Selected link */
+//a:active {
+//  color: $lightBlue;
+//  text-decoration: none;
+//}
+//
+//@media screen and (min-width: 0px) and (max-width: 800px) {
+//  .bottom_sheet_background {
+//    bottom: -200px;
+//    right: -200px;
+//  }
+//  .toolbar {
+//    span {
+//      //visibility: hidden;
+//      display: none;
+//    }
+//  }
+//}
+//
+//@media screen and (min-width: 801px) {
+//  .bottom_sheet_background {
+//    bottom: -120px;
+//    right: -120px;
+//  }
+//}

@@ -1,0 +1,45 @@
+@(user: String)(implicit request: RequestHeader)
+
+@chatFrame(Some(user)) {
+
+  <div id="sticky-anchor"></div>
+  <div id="div-msgs-input">
+    <form id="chatBody">
+      <input type="text" id="msg" placeholder="What's happening?">
+      <button type="submit" id="submit">Send</button>
+    </form>
+  </div>
+
+  <div id="div-error">
+    Empty message?!
+  </div>
+
+  <div class="div-msgs" id="msgs"></div>
+
+  <script type="text/javascript">
+          $(function () {
+            // Create a new websocket
+            ws = new WebSocket("@routes.Chat.chatSocket(user).webSocketURL()")
+
+            // Add the received msg from the websocket to the screen
+            ws.onmessage = function (msg) {
+              $("<div class=\"div-msg\"/>").text(msg.data).prependTo("#msgs")
+            }
+
+            // Show error if empty msg
+            // Otherwise send the msg to the websocket
+            $("#chatBody").submit(function () {
+              if ($("#msg").val().length === 0) {
+                $("#div-error").show();
+                return false;
+              } else {
+                $("#div-error").hide();
+                ws.send($("#msg").val())
+                $("#msg").val("").focus()
+                return false;
+              }
+            })
+          })
+  </script>
+
+}
