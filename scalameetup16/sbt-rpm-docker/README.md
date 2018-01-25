@@ -1,25 +1,6 @@
-# Hello World Akka Typed and Docker
+# sbt-rpm-docker
 
----
-
-This presentation slides are built with REPLesent!
-
-REPLesent is a neat little tool to build presentations
-using the Scala REPL.
-
----
-
-- Akka
-- Akka Typed
-- sbt-native-packager
-  - RPM
-  - Docker
-
----
-
-## sbt-rpm-docker
-
-The is a web app serving at port `9000` built with Akka HTTP.
+The is a web app serving at port `9000` built with Akka HTTP
 - Note that in `Server.scala`, host is bind to `0.0.0.0` which means any traffics instead of `127.0.0.1` nor `localhost`
 
 ---
@@ -100,7 +81,7 @@ dockerExposedPorts := Seq(9000)
 - Specify the `Dockerfile` for building the Docker image
   - `ExecCmd` note the command will be executed during the building of the container
   - `Cmd` note the command will be executed after the container is built
-  - `-y` option passes `yes` to `yum` command prompt to install Java OpenJDK 
+  - `-y` option passes `yes` to `yum` command prompt to install Java OpenJDK. 
 
 ```
 dockerCommands := Seq(
@@ -174,42 +155,7 @@ $ ps -ef | grep sandbox-akka-typed-docker
 
 ## References
 
-- Akka
-- Akka Typed
-  - https://akka.io/blog/2017/05/05/typed-intro
 - sbt-native-packager
   - http://www.scala-sbt.org/sbt-native-packager/formats/index.html
 - Docker commands
   - https://docs.docker.com/engine/reference/commandline/docker/
-
----
-
-| Thank you!
-
-| Q&A/Comments/Suggestions?
-
---- 
-
-This presentation is built with [REPLesent](https://github.com/marconilanna/REPLesent).
-
-To run the slides, first create the follow alias:
-
-```
-alias REPLesent='scala -Dscala.color -language:_ -nowarn -i REPLesent.scala'
-```
-
-Open the REPL and enter the statements below to start the presentation:
-
-```
-$ REPLesent
-Welcome to Scala 2.12.3 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_65).
-Type in expressions for evaluation. Or try :help.
-
-scala> val replesent = REPLesent(intp=$intp,source="~/Documents/workspace/scalameetups/scalameetup16/README.md")
-replesent: REPLesent = REPLesent(0,0,~/Documents/workspace/scalameetups/scalameetup16/README.md,true,true,scala.tools.nsc.interpreter.ILoop$ILoopInterpreter@3b80bb63)
-
-scala> import replesent._
-import replesent._
-
-scala> f
-```
