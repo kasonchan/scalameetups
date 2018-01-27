@@ -17,6 +17,164 @@ using the Scala REPL.
 
 ---
 
+## Akka & Actor Model
+
+- Toolkit built by Lightbend
+  - Actors (Local, Remote, Typed), Network (Cluster, Cluster Sharding), Streams, HTTP/HTTPs
+- A computation model invented by Hewit, Bishop and Steiger in 1973
+- Actor
+  - A computational entity, in response to a message it receives
+    - Send a finite number of messages to other actors
+    - Create a finite number of new actors
+    - Designate the behavior to be used for the next message it receives
+
+---
+
+- `Main.scala`
+
+```scala
+import actors.U
+import akka.actor.{ActorSystem => ASU, Props => PropsU}
+import akka.pattern.ask
+import scala.concurrent.duration._
+import akka.util.Timeout
+
+object Main {
+  def main(args: Array[String]): Unit = {
+    implicit val timeout = Timeout(5 seconds)
+
+        val systemU = ASU("asu")
+        val au = systemU.actorOf(PropsU[U], "au")
+
+        au ! "noReply"
+        val future1 = (au ? "helloworld").mapTo[String]
+        val reply1 = Await.result(future1, 5.seconds)
+        println(reply1)
+
+        val future2 = (au ? 42).mapTo[String]
+        val reply2 = Await.result(future2, 5.seconds)
+        println(reply2)
+  }
+}
+```
+
+---
+
+- `actors/U.scala`
+
+```scala
+class U extends Actor with ActorLogging {
+  def receive: PartialFunction[Any, Unit] = {
+    case "noReply" =>
+      log.info("received noReply from {}", sender)
+    case "helloworld" =>
+      sender ! s"helloworld from ${self.path.name}"
+      log.info("received helloworld from {}", sender)
+    case _ =>
+      sender ! s"unknown message from ${self.path.name}"
+      log.info("received unknown message from {}", sender())
+  }
+}
+```
+
+---
+
+```
+helloworld from au
+unknown message from au
+
+[akka://asu/user/au] received noReply from Actor[akka://asu/deadLetters]
+[asu-akka.actor.default-dispatcher-2] [akka://asu/user/au] received helloworld from Actor[akka://asu/temp/$a]
+[asu-akka.actor.default-dispatcher-2] [akka://asu/user/au] received unknown message from Actor[akka://asu/temp/$b]
+```
+
+---
+
+## Akka Untyped
+
+- Classic actors
+  - No information of
+    - what types of messages can be sent to the actors
+    - what type of destination actor has
+
+---
+
+## Akka Typed
+
+- `2.5.9` is the latest version. However, Lightbend Akka team recommend to stay on version
+`2.5.8` for now if we prefer a single migration task.
+
+```
+libraryDependencies ++= Seq(
+  "com.typesafe.akka" %% "akka-typed" % "2.5.8"
+)
+```
+
+---
+
+## Akka Typed
+
+```
+import akka.actor.ActorSystem
+val systemU = ActorSystem("asu")
+val au = systemU.actorOf(PropsU[U], "au")
+
+val systemT = ActorSystem("ast")
+val at: ActorRef[Greeter.Command] =
+  systemT.spawn(Greeter.greeterBehavior, "at")
+```
+
+---
+
+## Akka Untyped
+
+```
+object Greeter1 {
+  case object Greet
+  final case class WhoToGreet(who: String)
+}
+
+class Greeter1 extends Actor {
+  import Greeter1._
+
+  private var greeting = "hello"
+
+  override def receive = {
+    case WhoToGreet(who) =>
+      greeting = s"hello, $who"
+    case Greet =>
+      println(greeting)
+  }
+}
+```
+
+---
+
+# Akka Typed
+
+```
+object Greeter2 {
+  sealed trait Command
+  case object Greet extends Command
+  final case class WhoToGreet(who: String) extends Command
+
+  val greeterBehavior: Behavior[Command] = greeterBehavior(currentGreeting = "hello")
+
+  private def greeterBehavior(currentGreeting: String): Behavior[Command] =
+    Actor.immutable[Command] { (ctx, msg) =>
+      msg match {
+        case WhoToGreet(who) =>
+          greeterBehavior(s"hello, $who")
+        case Greet =>
+          println(currentGreeting)
+          Actor.same
+      }
+    }
+}
+```
+
+---
+
 ## sbt-rpm-docker
 
 The is a web app serving at port `9000` built with Akka HTTP.
@@ -100,7 +258,7 @@ dockerExposedPorts := Seq(9000)
 - Specify the `Dockerfile` for building the Docker image
   - `ExecCmd` note the command will be executed during the building of the container
   - `Cmd` note the command will be executed after the container is built
-  - `-y` option passes `yes` to `yum` command prompt to install Java OpenJDK 
+  - `-y` option passes `yes` to `yum` command prompt to install Java OpenJDK
 
 ```
 dockerCommands := Seq(
@@ -176,6 +334,7 @@ $ ps -ef | grep sandbox-akka-typed-docker
 
 - Akka
 - Akka Typed
+  - https://akka.io/blog/news/2018/01/11/akka-2.5.9-released-2.4.x-end-of-life
   - https://akka.io/blog/2017/05/05/typed-intro
 - sbt-native-packager
   - http://www.scala-sbt.org/sbt-native-packager/formats/index.html
@@ -188,7 +347,7 @@ $ ps -ef | grep sandbox-akka-typed-docker
 
 | Q&A/Comments/Suggestions?
 
---- 
+---
 
 This presentation is built with [REPLesent](https://github.com/marconilanna/REPLesent).
 
