@@ -94,7 +94,7 @@ libraryDependencies ++= Seq(
 - Default is set to return a `Restart` message when `/user` receives an exception/failure
 - `OneForOneStrategy` only applies to the failed actor and does not affect another
 - `AllForOneStrategy` applies to all children under supervision in case of
-  failure of any one actor under a supervisor
+  failure of any one actor under a supervisor. It is removed in Akka Typed.
 
 ---
 
@@ -102,6 +102,15 @@ libraryDependencies ++= Seq(
 
 - `watch` is used to check whether particular actor is running or not
 - `onSignal` is used to check for actor liveness in Akka Typed
+
+---
+
+## References
+
+- Akka Typed
+  - https://akka.io/blog/2017/05/16/supervision
+  - https://akka.io/blog/2017/05/19/signals
+  - https://github.com/patriknw/akka-typed-blog/blob/master/src/main/scala/blog/typed/scaladsl/FlakyWorker2.scala
 
 ---
 

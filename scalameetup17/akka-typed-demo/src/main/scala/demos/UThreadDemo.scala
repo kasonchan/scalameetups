@@ -6,8 +6,8 @@ import akka.pattern.ask
 import akka.util.Timeout
 import threads.actions._
 
-import scala.concurrent.Await
 import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 import scala.io.StdIn
 
 /**
@@ -29,8 +29,8 @@ object UThreadDemo {
     utm ! "What is your state?"
     utm ! Start
     utm ! State
-    val futureUtmJobs1 = (utm ? UWork).mapTo[Int]
-    val utmJobs1 = Await.result(futureUtmJobs1, 5.seconds)
+    val futureUtmJobs1: Future[Int] = (utm ? UWork).mapTo[Int]
+    val utmJobs1: Int = Await.result(futureUtmJobs1, 5.seconds)
     println(utmJobs1)
     utm ! State
     val futureUtmJobs2 = (utm ? UWork).mapTo[Int]
