@@ -79,6 +79,30 @@ libraryDependencies ++= Seq(
 
 ## Akka Untyped vs Akka Typed: Supervision and Signal
 
+```
++------+   +--------+   +-------+   +------+
+|Office|-->|Director|-->|Manager|-->|Worker|
++------+   +--------+   +-------+   +------+
+
+--> denotes supervision from left to right
+```
+
+---
+
+## Akka Untyped vs Akka Typed: Supervision
+
+- Default is set to return a `Restart` message when `/user` receives an exception/failure
+- `OneForOneStrategy` only applies to the failed actor and does not affect another
+- `AllForOneStrategy` applies to all children under supervision in case of
+  failure of any one actor under a supervisor
+
+---
+
+## Akka Untyped vs Akka Typed: Signal
+
+- `watch` is used to check whether particular actor is running or not
+- `onSignal` is used to check for actor liveness in Akka Typed
+
 ---
 
 ## Thank you!
