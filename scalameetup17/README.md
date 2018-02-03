@@ -12,8 +12,8 @@ using the Scala REPL.
 ## Akka Untyped
 
 - Classic untyped actors does not have information
- - what types of messages that can be sent via that ActorRef
- - what type the destination Actor has
+  - what types of messages that can be sent via that ActorRef
+  - what type the destination Actor has
 - Difficult to read and prone to programming mistakes
 
 ---
