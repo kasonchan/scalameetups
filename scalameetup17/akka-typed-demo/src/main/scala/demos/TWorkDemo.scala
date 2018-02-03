@@ -20,13 +20,13 @@ object TWorkDemo {
 
     val toffice: ActorSystem = akka.actor.ActorSystem("toffice")
 
-    val tteam: typed.ActorRef[Messages] = toffice.spawn(TTeam.behavior, "tteam")
+    val tteam: typed.ActorRef[Messages] = toffice.spawn(TTeam.initial, "tteam")
 
     tteam ! Work
 
     StdIn.readLine()
 
-    toffice.actorSelection("user/tteam/tdirector-1/umanager/uworker-1") ! EscalateException
+    toffice.actorSelection("user/tteam/tdirector-1/tmanager/tworker-1") ! EscalateException
 
     StdIn.readLine()
 
@@ -34,7 +34,7 @@ object TWorkDemo {
 
     StdIn.readLine()
 
-    toffice.actorSelection("user/tteam/tdirector-1/umanager/uworker-1") ! RestartException
+    toffice.actorSelection("user/tteam/tdirector-1/tmanager/tworker-1") ! RestartException
 
     StdIn.readLine()
 

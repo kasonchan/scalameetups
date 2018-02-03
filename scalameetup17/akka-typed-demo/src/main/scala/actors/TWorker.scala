@@ -11,29 +11,29 @@ import messages.{EscalateException, Messages, RestartException, Work}
 object TWorker {
   private val sleepTime = 500
 
-  def behavior: Behavior[Messages] =
+  def ready: Behavior[Messages] =
     Actor.immutable[Messages] { (ctx, msg) =>
       msg match {
         case Work =>
-          ctx.system.log.info("WORKING")
+          ctx.system.log.info("{} [READY] WORKING", ctx.self.path)
           Actor.same
         case restart: RestartException =>
-          ctx.system.log.info("RESTART")
+          ctx.system.log.info("{} [READY] RESTART", ctx.self.path)
           throw restart
           Thread.sleep(sleepTime)
           Actor.same
         case escalate: EscalateException =>
-          ctx.system.log.info("ESCALATE")
+          ctx.system.log.info("{} [READY] ESCALATE", ctx.self.path)
           throw escalate
           Thread.sleep(sleepTime)
           Actor.same
       }
     } onSignal {
       case (ctx, PreRestart) =>
-        ctx.system.log.info("Prerestart")
+        ctx.system.log.info("{} Prerestart", ctx.self.path)
         Actor.same
       case (ctx, PostStop) =>
-        ctx.system.log.info("PostStop")
-        Actor.same
+        ctx.system.log.info("{} PostStop", ctx.self.path)
+        Actor.stopped
     }
 }
