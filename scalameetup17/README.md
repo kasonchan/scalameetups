@@ -89,12 +89,47 @@ libraryDependencies ++= Seq(
 
 ---
 
+## Akka Typed: Supervision
+
+- Default supervisory strategy
+
+```
+import akka.actor.OneForOneStrategy
+import akka.actor.SupervisorStrategy._
+import scala.concurrent.duration._
+
+override val supervisorStrategy =
+  OneForOneStrategy(maxNrOfRetries = 10, withinTimeRange = 1 minute) {
+    case _: ArithmeticException      ⇒ Resume
+    case _: NullPointerException     ⇒ Restart
+    case _: IllegalArgumentException ⇒ Stop
+    case _: Exception                ⇒ Escalate
+  }
+```
+
+---
+
+## Akka Typed: Supervision
+
+- When the supervisor strategy is not defined for an actor the following
+  exceptions are handled by default:
+  - ActorInitializationException will stop the failing child actor
+  - ActorKilledException will stop the failing child actor
+  - DeathPactException will stop the failing child actor
+  - Exception will restart the failing child actor
+  - Other types of Throwable will be escalated to parent actor
+- If the exception escalate all the way up to the root guardian it will handle
+  it in the same way as the default strategy defined above.
+
+---
+
 ## Akka Untyped vs Akka Typed: Supervision
 
 - Default is set to return a `Restart` message when `/user` receives an exception/failure
 - `OneForOneStrategy` only applies to the failed actor and does not affect another
 - `AllForOneStrategy` applies to all children under supervision in case of
-  failure of any one actor under a supervisor
+  failure of any one actor under a supervisor. It is removed in Akka Typed.
+- Supervisor strategy `Escalate` and `Stop` removed in Akka Typed
 
 ---
 
@@ -102,6 +137,27 @@ libraryDependencies ++= Seq(
 
 - `watch` is used to check whether particular actor is running or not
 - `onSignal` is used to check for actor liveness in Akka Typed
+- `preStart` and `postRestart` are replaced by placing such startup code in the
+  constructor of the behavior
+
+---
+
+## Akka Untyped vs Akka Typed: Logging
+
+- `log.info` in Akka Untyped logs the appropriate actor's path as opposite to
+  `ctx.system.log` logs `[akka.actor.ActorSystemImpl(toffice)]` which is the
+  `ActorSystem`'s name in Akka Typed
+
+---
+
+## References
+
+- Akka
+  - https://doc.akka.io/docs/akka/2.5/fault-tolerance.html
+- Akka Typed
+  - https://akka.io/blog/2017/05/16/supervision
+  - https://akka.io/blog/2017/05/19/signals
+  - https://github.com/patriknw/akka-typed-blog/blob/master/src/main/scala/blog/typed/scaladsl/FlakyWorker2.scala
 
 ---
 

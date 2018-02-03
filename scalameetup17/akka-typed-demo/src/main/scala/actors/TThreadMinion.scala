@@ -9,8 +9,6 @@ import threads.actions._
   * @since Jan-2018
   */
 object TThreadMinion {
-  private var jobs = 0
-
   val ttmBehavior: Behavior[Action] = NEW(jobs = 0)
 
   def NEW(jobs: Int): Behavior[Action] =
