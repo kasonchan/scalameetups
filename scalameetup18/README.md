@@ -21,7 +21,7 @@ Agenda
 - Used to perform an operation in other threads for concurrency and parallel
   execution
 - Placeholder construct for a value that may not exist yet
-- Monand for value executed in time
+- Monad for value executed in time
 
 ---
 
@@ -51,8 +51,23 @@ val sumFuture: Future[Int] = Future(1+2).mapTo[Int]
 sumFuture.onComplete {
   case Success(value) => println(value)
   case Failure(error) => println(error.getMessage)
-}
+} // (executionContext)
 ```
+
+---
+
+## Futures
+
+- `ExecutionContext` is similar to an Executor
+  - free to execute computations in a new thread, in a pooled thread or in the current thread
+- `ExecutionContext.global` is an ExecutionContext backed by a `ForkJoinPool`
+- `ForkJoinPool` manages a limited amount of threads
+- Parallelism level is maximum amount of threads being referred to
+  - `scala.concurrent.context.minThreads` - defaults to Runtime.availableProcessors
+  - `scala.concurrent.context.numThreads` - can be a number or a multiplier (N) in the form ‘xN’ ; defaults to Runtime.availableProcessors
+  - `scala.concurrent.context.maxThreads` - defaults to `Runtime.availableProcessors`
+  - The parallelism level will be set to `numThreads` as long as it remains
+    within [minThreads; maxThreads]
 
 ---
 
