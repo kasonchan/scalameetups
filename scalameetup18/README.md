@@ -82,9 +82,9 @@ sumFuture.onComplete {
 ## Akka Streams
 
 ```
-+------+   +----+  +----+
-|Source|-->|Flow|->|Sink|
-+------+   +----+  +----+
++------+   +-------+  +----+
+|Source|-->|Flow(s)|->|Sink|
++------+   +-------+  +----+
 ```
 
 - `Source`: Entry point of stream and must be at least one in every stream
@@ -94,9 +94,14 @@ sumFuture.onComplete {
 
 ---
 
+## Akka Streams Demo
+
+---
+
 ## Akka Streams
 
 - Do not send dropped stream elements to the dead letter office
+- Backpressure mechanisms enabled by default
 
 ---
 
