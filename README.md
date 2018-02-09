@@ -26,6 +26,8 @@ These documents should be easily follow and test and try them out.
     - [Akka Actors Basics Tour II](https://github.com/kasonchan/scalameetups/tree/master/scalameetup5-slides)
     - [Hello World Akka Typed and Docker](https://github.com/kasonchan/scalameetups/tree/master/scalameetup16)
     - [Akka Untyped vs Akka Typed Continued](https://github.com/kasonchan/scalameetups/tree/master/scalameetup17)
+  - Streams
+    - [Hello Akka Streams](https://github.com/kasonchan/scalameetups/tree/master/scalameetup18)
   - HTTP
     - [Build a REST API](https://github.com/kasonchan/scalameetups/tree/master/scalameetup10)
 - Miscellaneous
