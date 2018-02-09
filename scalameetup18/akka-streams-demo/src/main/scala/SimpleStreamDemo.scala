@@ -7,6 +7,7 @@ import scala.io.StdIn
 /**
   * @author kasonchan
   * @since 2018-02
+  *
   */
 object SimpleStreamDemo {
   def main(args: Array[String]): Unit = {
