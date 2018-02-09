@@ -133,7 +133,8 @@ sumFuture.onComplete {
 
 ## Akka Streams Operations
 
-- Basic operations that can be apply to Scala collections can be applied to Akka Streams
+- Basic operations that can be apply to Scala collections can be applied to
+  Akka Streams i.e. `map`, `filter`, `fold` `mapConcat` == `flatMap`
 
 ---
 
