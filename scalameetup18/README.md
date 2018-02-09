@@ -45,7 +45,7 @@ Agenda
 
 ## Futures
 
-```scala
+```
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
@@ -55,6 +55,8 @@ sumFuture.onComplete {
   case Success(value) => println(value)
   case Failure(error) => println(error.getMessage)
 } // (executionContext)
+
+sumFuture.isCompleted
 ```
 
 ---
@@ -81,6 +83,7 @@ sumFuture.onComplete {
   downloading or uploading
   - Data transfer across computers i.e. via TCP becomes too large to handle as Big Data
   - Akka Actor is tedious and error-prone to handle streams of data not to overflow the mailboxes and buffers
+  - Checkout case study on ["Akka streams for high throughput data processing by Zack Loebel-Begelman"](https://www.youtube.com/watch?v=CUVOBANHzpo)
 - Follows ["Reactive Streams manifesto"](http://www.reactive-streams.org/)
   which defines a standard for asynchronous streams processing
 
