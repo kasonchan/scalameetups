@@ -11,19 +11,31 @@ using the Scala REPL.
 
 ## Agenda
 
+- [better-files](https://github.com/pathikrit/better-files)
 - Akka Streams
   - Basic Components and operations
-  - IO
-  - Graph
+  - File IO
+  - IO and Graphs
 
 ---
 
+## [better-files](https://github.com/pathikrit/better-files)
 
+- Simple, safe and intuitive Scala I/O
+
+```
+"com.github.pathikrit" %% "better-files" % "3.4.0"
+```
+
+---
+
+## Akka Streams File IO Demo
 
 ---
 
 ## References
 
+- [better-files](https://github.com/pathikrit/better-files)
 - Akka Streams
   - Akka Cookbook
 

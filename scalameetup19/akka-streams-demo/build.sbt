@@ -10,5 +10,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % "2.5.9",
   "com.typesafe.akka" %% "akka-testkit" % "2.5.9" % Test,
   "com.typesafe.akka" %% "akka-stream" % "2.5.9",
-  "com.typesafe.akka" %% "akka-stream-testkit" % "2.5.9" % Test
+  "com.typesafe.akka" %% "akka-stream-testkit" % "2.5.9" % Test,
+  "com.github.pathikrit" %% "better-files" % "3.4.0"
 )
