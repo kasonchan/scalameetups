@@ -12,6 +12,8 @@ using the Scala REPL.
 ## Agenda
 
 - [better-files](https://github.com/pathikrit/better-files)
+
+- [jwt-scala](https://github.com/pauldijou/jwt-scala)
 - Akka Streams
   - Basic Components and operations
   - File IO
@@ -24,12 +26,83 @@ using the Scala REPL.
 - Simple, safe and intuitive Scala I/O
 
 ```
-"com.github.pathikrit" %% "better-files" % "3.4.0"
+libraryDependencies ++= Seq(
+  "com.github.pathikrit" %% "better-files" % "3.4.0"
+)
 ```
 
 ---
 
 ## Akka Streams File IO Demo
+
+---
+
+## Akka Streams
+
+```
++------+   +-------+  +----+
+|Source|-->|Flow(s)|->|Sink|
++------+   +-------+  +----+
+```
+
+- `Source`: Entry point of stream and must be at least one in every stream
+- `Flow`: Component responsible for manipulating elements of stream and there can
+  be none of any number
+- `Sink`: Exit point of stream and must be at least one in every stream
+
+---
+
+## Akka Streams IO
+
+```
+Incoming     +----------+             +----------+
+TCP Packets->|Incoming  |-ByteString->|Connection|
+             |Connection|             |Flow      |
+   Outgoing<-|Flow      |<-ByteString-|          |
+TCP Packets  +----------+             +----------+
+```
+
+---
+
+## Akka Streams IO Demo
+
+---
+
+---
+
+## Akka Streams IO
+
+- Run the following command
+```
+echo -n 'Hello World from Akka Stream!' | nc 127.0.0.1 19999
+```
+
+---
+
+## uPickle
+
+- uPickle: a simple Scala JSON serialization library
+
+---
+
+## jwt-scala
+
+- JWT support for Scala. Bonus extensions for Play, Play JSON, Json4s, Circe and uPickle
+
+---
+
+```
+echo -n '{"$type":"messages.Encode","msg":"Hello world from Akka Stream"}' | nc 127.0.0.1 19999
+```
+
+---
+
+## Akka Streams IO
+
+- `Flow` process `ByteString` s from and to the TCP Socket
+- `Framing.delimiter` helper `Flow` to chunk the inputs up into actual lines of text
+  - 1 `ByteString` does not have to correspond to exactly one line of text
+- `allowTruncation` boolean argument indicates we require an explicit line ending even for the last message before the connection is closed
 
 ---
 
