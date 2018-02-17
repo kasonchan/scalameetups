@@ -1,44 +1,13 @@
 package messages
 
-import upickle.default.{ReadWriter => RW, macroRW}
+import upickle.default.{macroRW, ReadWriter => RW}
 
 /**
   * @author kasonchan
-  * @since 2018-02-16
+  * @since 2018-02
   */
-sealed trait Messages
+case class Packet(status: String, msg: String)
 
-case class Encode(msg: String) extends Messages
-
-object Encode {
-  implicit def rw: RW[Encode] = macroRW
-
-}
-
-case class Encoded(msg: String) extends Messages
-
-object Encoded {
-  implicit def rw: RW[Encoded] = macroRW
-
-}
-
-case class Decode(msg: String) extends Messages
-
-object Decode {
-  implicit def rw: RW[Decode] = macroRW
-
-}
-
-case class Decoded(msg: String) extends Messages
-
-object Decoded {
-  implicit def rw: RW[Decoded] = macroRW
-
-}
-
-case class Meh(msg: String) extends Messages
-
-object Meh {
-  implicit def rw: RW[Meh] = macroRW
-
+object Packet {
+  implicit def rw: RW[Packet] = macroRW
 }

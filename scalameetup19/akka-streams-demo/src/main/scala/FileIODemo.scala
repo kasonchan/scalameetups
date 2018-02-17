@@ -3,8 +3,8 @@ import akka.stream.scaladsl.{Compression, FileIO, Flow, Sink, Source}
 import akka.stream.{ActorMaterializer, IOResult, Materializer}
 import akka.util.ByteString
 import akka.{Done, NotUsed}
-import better.files._
 import better.files.Dsl._
+import better.files._
 
 import scala.concurrent.Future
 import scala.io.StdIn
