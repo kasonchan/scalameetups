@@ -25,6 +25,7 @@ These documents should be easily follow and test and try them out.
     - [Akka Actors Basics Tour I](https://github.com/kasonchan/scalameetups/tree/master/scalameetup4-slides)
     - [Akka Actors Basics Tour II](https://github.com/kasonchan/scalameetups/tree/master/scalameetup5-slides)
     - [Hello World Akka Typed and Docker](https://github.com/kasonchan/scalameetups/tree/master/scalameetup16)
+      - [sbt-native-packager](https://github.com/sbt/sbt-native-packager), [Docker commands](https://docs.docker.com/engine/reference/commandline/docker/)
     - [Akka Untyped vs Akka Typed Continued](https://github.com/kasonchan/scalameetups/tree/master/scalameetup17)
   - Streams
     - [Hello Akka Streams](https://github.com/kasonchan/scalameetups/tree/master/scalameetup18)
