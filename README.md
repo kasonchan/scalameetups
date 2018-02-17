@@ -10,6 +10,7 @@ These documents should be easily follow and test and try them out.
 
 - Language Basics
   - [Intro to Scala &#65120; SBT](https://github.com/kasonchan/scalameetups/tree/master/scalameetup1)
+    - [SBT](https://www.scala-sbt.org/1.x/docs/index.html)
   - [Scala Scripting, Scalastyle and Scalafmt](https://github.com/kasonchan/scalameetups/tree/master/scalameetup2)
     - [Scalastyle](http://www.scalastyle.org/), [Scalafmt](http://scalameta.org/scalafmt/)
   - [Scala Basics Tour](https://github.com/kasonchan/scalameetups/tree/master/scalameetup3)
