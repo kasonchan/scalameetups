@@ -11,8 +11,142 @@ using the Scala REPL.
 
 ## Agenda
 
+- Akka Configurations
+- Akka Logging
+  - [Logback](https://logback.qos.ch/)
 - Akka Streams
-  - Graphs
+  - Graphs <...> GraphsDSL
+
+---
+
+## Akka Configurations and Logging Demo
+
+---
+
+## Akka Configurations
+
+- `src/main/resources/application.conf` is where the developer set configurations
+can be placed to by default
+- Add `akka.log-config-on-start = on` to show complete configuration at `INFO`
+level when the actor system is started
+  - it is set to `off` by default
+
+---
+
+## [Logback](https://logback.qos.ch/)
+
+- "Logback is intended as a successor to the popular log4j project, picking up where log4j leaves off."
+- By default, we can set logback configurations in `src/main/resources/logback.xml`
+
+```
+libraryDependencies ++= "ch.qos.logback" % "logback-classic" % "1.2.3"
+```
+
+---
+
+## [Logback](https://logback.qos.ch/)
+
+- Set root level
+  - Reference `ASYNCSTDOUT` and `ASYNCFILE` appender
+
+```
+<root level="DEBUG">
+  <appender-ref ref="ASYNCSTDOUT" />
+  <appender-ref ref="ASYNCFILE" />
+</root>
+```
+
+---
+
+## [Logback](https://logback.qos.ch/)
+
+- Create an conversion rule called `coloredLevel` referencing `logger.ColoredLevel`
+
+```
+<conversionRule conversionWord="coloredLevel" converterClass="logger.ColoredLevel" />
+```
+
+- Create an appender
+  - Use console appender and name as `STDOUT`
+  - Set `%d` using `ISO8601` format
+  - Append `%coloredLevel`
+  - `%-10` left-aligned 10-character
+  - `%X` conversion specifier for `akkaSource`
+  - `%n` represents a new line
+  - `%xException` prints the exception if there is an exception
+
+```
+<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+  <encoder>
+    <pattern>%d{ISO8601} %coloredLevel %-10logger{10} %X{akkaSource} %thread - %message%n%xException</pattern>
+  </encoder>
+</appender>
+```
+
+---
+
+## [Logback](https://logback.qos.ch/)
+
+- Create a file appender
+  - Append new log to application home `/logs/application.log`
+
+```
+<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>${application.home:-.}/logs/application.log</file>
+    <encoder>
+      <pattern>%d{ISO8601} %-10level %-10logger{10} %X{akkaSource} %thread - %message%n%xException</pattern>
+    </encoder>
+  </appender>
+```
+
+- Create async standard out and file appender by referencing `STDOUT` and `FILE` appender
+
+```
+<appender name="ASYNCSTDOUT" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="STDOUT" />
+  </appender>
+
+<appender name="ASYNCFILE" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="FILE" />
+  </appender>
+```
+
+---
+
+## [Logback](https://logback.qos.ch/)
+
+- Create a logger reference the name of the logging class
+
+```
+val log: Logger = LoggerFactory.getLogger(this.getClass)
+```
+
+- Create a named `foo` logger
+
+```
+val foo: Logger = LoggerFactory.getLogger("foo")
+```
+
+---
+
+## Akka and [Logback](https://logback.qos.ch/)
+
+- By default, Akka uses `akka.loggers = ["akka.event.Logging$DefaultLogger"]`
+  - it logs to `STDOUT` and it is not intended to use in production
+- Akka provides a logger for `SLF4J` at `akka-slf4j.jar`
+- Akka team recommend [Logback](https://logback.qos.ch/)
+
+---
+
+## Akka and [Logback](https://logback.qos.ch/)
+
+- Use Logback with Akka, specify the following in `src/main/resources/application.conf`
+
+```
+akka.loggers = ["akka.event.slf4j.Slf4jLogger"]
+akka.loglevel = "DEBUG"
+akka.logging-filter = "akka.event.slf4j.Slf4jLoggingFilter"
+```
 
 ---
 
@@ -112,8 +246,19 @@ val mergedMap = names ++ moreNames.map {
 
 ---
 
+## Akka Streams Graphs
+
+- GraphDSL is not able to provide compile time type-safety about whether or not
+all elements have been properly connected—this validation is performed as a
+runtime check during the graph’s instantiation
+
+---
+
 ## References
 
+- [Logback](https://logback.qos.ch/)
+- Akka Logging
+  - https://doc.akka.io/docs/akka/2.5/logging.html
 - Akka Streams
   - https://doc.akka.io/docs/akka/2.5/stream/stream-graphs.html
   - Akka Cookbook
