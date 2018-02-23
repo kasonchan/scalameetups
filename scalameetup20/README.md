@@ -267,9 +267,11 @@ runtime check during the graph’s instantiation
 
 ## [Akka Streams Backpressure](https://www.slideshare.net/Lightbend/understanding-akka-streams-back-pressure-and-asynchronous-architectures)
 
+```
 +---------+             +----------+
 |Publisher|-message(s)->|Subscriber|
 +---------+             +----------+
+```
 
 - Fast Publisher [100 operations per second] and slow Subscriber [1 operation per second]
 - Subscriber usually has some kind of buffer
