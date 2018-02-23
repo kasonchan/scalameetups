@@ -33,6 +33,8 @@ These documents should be easily follow and test and try them out.
     - [Hello Akka Streams](https://github.com/kasonchan/scalameetups/tree/master/scalameetup18)
     - [IO and Graphs with Akka Streams](https://github.com/kasonchan/scalameetups/tree/master/scalameetup19)
       - [better-files](https://github.com/pathikrit/better-files), [uPickle](http://www.lihaoyi.com/upickle/), [Java KeyPairGenerator](https://docs.oracle.com/javase/7/docs/api/java/security/KeyPairGenerator.html),  [jwt-scala](https://github.com/pauldijou/jwt-scala)
+    - [Akka Streams Graphs](https://github.com/kasonchan/scalameetups/tree/master/scalameetup20)
+      - [Logback](https://logback.qos.ch/)
   - HTTP
     - [Build a REST API](https://github.com/kasonchan/scalameetups/tree/master/scalameetup10)
 - Miscellaneous
