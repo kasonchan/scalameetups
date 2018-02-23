@@ -16,6 +16,7 @@ using the Scala REPL.
   - [Logback](https://logback.qos.ch/)
 - Akka Streams
   - Graphs <...> GraphsDSL
+- Akka Streams Backpressure
 
 ---
 
@@ -25,8 +26,8 @@ using the Scala REPL.
 
 ## Akka Configurations
 
-- `src/main/resources/application.conf` is where the developer set configurations
-can be placed to by default
+- `src/main/resources/application.conf` is where the developer set
+  configurations can be placed to by default
 - Add `akka.log-config-on-start = on` to show complete configuration at `INFO`
 level when the actor system is started
   - it is set to `off` by default
@@ -35,7 +36,8 @@ level when the actor system is started
 
 ## [Logback](https://logback.qos.ch/)
 
-- "Logback is intended as a successor to the popular log4j project, picking up where log4j leaves off."
+- "Logback is intended as a successor to the popular log4j project,
+  picking up where log4j leaves off."
 - By default, we can set logback configurations in `src/main/resources/logback.xml`
 
 ```
@@ -227,21 +229,30 @@ val mergedMap = names ++ moreNames.map {
 - Junctions serves as fan-in and fan-out points for Flows
   - Fan-out
     - `Broadcast[T]` – (1 input, N outputs) given an input element emits to each output
-    - `Balance[T]` – (1 input, N outputs) given an input element emits to one of its output ports
-    - `UnzipWith[In,A,B,...]` – (1 input, N outputs) takes a function of 1 input that given a value for each input emits N output elements (where N <= 20)
-    - `UnZip[A,B]` – (1 input, 2 outputs) splits a stream of (A,B) tuples into two streams, one of type A and one of type B
+    - `Balance[T]` – (1 input, N outputs) given an input element emits to
+      one of its output ports
+    - `UnzipWith[In,A,B,...]` – (1 input, N outputs) takes a function of 1 input
+      that given a value for each input emits N output elements (where N <= 20)
+    - `UnZip[A,B]` – (1 input, 2 outputs) splits a stream of (A,B) tuples into
+      two streams, one of type A and one of type B
 
 ---
 
 ## Akka Streams Graphs
 
 - Junctions serves as fan-in and fan-out points for Flows
-  - `Merge[In]` – (N inputs , 1 output) picks randomly from inputs pushing them one by one to its output
-  - `MergePreferred[In]` – like Merge but if elements are available on preferred port, it picks from it, otherwise randomly from others
-  - `MergePrioritized[In]` – like Merge but if elements are available on all input ports, it picks from them randomly based on their priority
-  - `ZipWith[A,B,...,Out]` – (N inputs, 1 output) which takes a function of N inputs that given a value for each input emits 1 output element
-  - `Zip[A,B]` – (2 inputs, 1 output) is a ZipWith specialized to zipping input streams of A and B into a (A,B) tuple stream
-  - `Concat[A]` – (2 inputs, 1 output) concatenates two streams (first consume one, then the second one)
+  - `Merge[In]` – (N inputs , 1 output) picks randomly from inputs
+    pushing them one by one to its output
+  - `MergePreferred[In]` – like Merge but if elements are available on preferred port,
+    it picks from it, otherwise randomly from others
+  - `MergePrioritized[In]` – like Merge but if elements are available on
+    all input ports, it picks from them randomly based on their priority
+  - `ZipWith[A,B,...,Out]` – (N inputs, 1 output) which takes a function of
+    N inputs that given a value for each input emits 1 output element
+  - `Zip[A,B]` – (2 inputs, 1 output) is a ZipWith specialized to zipping
+    input streams of A and B into a (A,B) tuple stream
+  - `Concat[A]` – (2 inputs, 1 output) concatenates two streams
+    (first consume one, then the second one)
 - Checkout more details on on [stages overview](https://doc.akka.io/docs/akka/2.5/stream/stages-overview.html)
 
 ---
@@ -254,6 +265,33 @@ runtime check during the graph’s instantiation
 
 ---
 
+## [Akka Streams Backpressure](https://www.slideshare.net/Lightbend/understanding-akka-streams-back-pressure-and-asynchronous-architectures)
+
++---------+             +----------+
+|Publisher|-message(s)->|Subscriber|
++---------+             +----------+
+
+- Fast Publisher [100 operations per second] and slow Subscriber [1 operation per second]
+- Subscriber usually has some kind of buffer
+  - What to do if buffer overflow?
+    - TCP and Kernel: Bounded buffer: drop messages + require resend messages
+    - Increase buffer size? Out of memory? While memory available
+    - Reactive streams: Dynamic push/pull pull-based-backpressure
+
+---
+
+## Akka Streams Backpressure Demo
+
+---
+
+## [Akka Streams](https://www.slideshare.net/Lightbend/understanding-akka-streams-back-pressure-and-asynchronous-architectures)
+
+- Checkout more `OverflowStrategy` at https://doc.akka.io/japi/akka/current/akka/stream/OverflowStrategy.html
+- Reactive Streams goals: avoid unbounded buffering across async boundaries and inter-op interfaces between various libraries
+- Checkout for [Understanding Akka Streams, Back Pressure, and Asynchronous Architectures](https://www.slideshare.net/Lightbend/understanding-akka-streams-back-pressure-and-asynchronous-architectures) for Asynchronous processing toolbox power and constraints Slides 31-37
+
+---
+
 ## References
 
 - [Logback](https://logback.qos.ch/)
@@ -262,6 +300,8 @@ runtime check during the graph’s instantiation
 - Akka Streams
   - https://doc.akka.io/docs/akka/2.5/stream/stream-graphs.html
   - Akka Cookbook
+  - https://chariotsolutions.com/blog/post/simply-explained-akka-streams-backpressure/
+  - https://www.slideshare.net/Lightbend/understanding-akka-streams-back-pressure-and-asynchronous-architectures
 
 ---
 
