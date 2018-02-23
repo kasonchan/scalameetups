@@ -1,4 +1,4 @@
-# IO and Graphs with Akka Streams
+# Akka Streams Graphs
 
 ---
 
