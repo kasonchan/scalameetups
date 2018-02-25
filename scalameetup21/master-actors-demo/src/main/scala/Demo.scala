@@ -1,10 +1,9 @@
-import actors.{BaseActor, Gateway, Ping}
+import actors.Gateway
 import akka.actor.{ActorRef, ActorSystem, Kill, Props}
 import logger.MyLogger
+import messages.Request
 
 import scala.annotation.tailrec
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
 import scala.io.StdIn
 
 /**
@@ -17,23 +16,20 @@ object Demo extends MyLogger {
 
     implicit val system: ActorSystem = ActorSystem("mastersystem")
 
-    system.log.info("Master is starting...")
-
     val gateway = system.actorOf(Props[Gateway], "gateway")
 
-//    system.scheduler.schedule(1 second, 1 second, gateway, Ping)
-
-    msg(gateway)
+    io(system, gateway)
   }
 
   @tailrec
-  def msg(actor: ActorRef): Any = {
+  def io(system: ActorSystem, actor: ActorRef): Any = {
     StdIn.readLine() match {
       case "quit" | "q" =>
         actor ! Kill
+        system.terminate()
       case x =>
-        actor ! x
-        msg(actor)
+        actor ! Request(x)
+        io(system, actor)
     }
   }
 

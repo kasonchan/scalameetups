@@ -1,7 +1,13 @@
 package actors
 
-import akka.actor.{Actor, Props, Terminated}
+import akka.actor.{Actor, ActorRef}
+import com.typesafe.config.ConfigFactory
 import logger.MyLogger
+import messages.{Packet, Request, Response}
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
+import scala.util.{Failure, Success}
 
 /**
   * @author kasonchan
@@ -10,20 +16,30 @@ import logger.MyLogger
 class Gateway extends Actor with MyLogger {
 
   override def preStart(): Unit = {
-    val master = context.system.actorOf(Props[BaseActor], "master")
-    context.watch(master)
-    log.info(s"I have been created at ${self.path.address.hostPort}")
+    log.info(s"$self prestarting...")
   }
 
   override def receive: Receive = {
-    case Ping =>
-      log.info(s"$self received $Ping")
-      sender() ! Pong
-    case Pong => log.info(s"$self received $Pong")
-    case Terminated(master) =>
-      val master = context.system.actorOf(Props[BaseActor], "master")
-      context.watch(master)
-    case msg @ _ => log.info(s"$self received $msg")
+    case p: Packet =>
+      p match {
+        case Request(msg) =>
+          log.info(s"$self received $p")
+          val conf = ConfigFactory.load()
+          context.system
+            .actorSelection(
+              s"${conf.getString("master.remote.selection.path")}")
+            .resolveOne(5 seconds)
+            .onComplete {
+              case Success(m: ActorRef) =>
+                log.info(s"$self forwarding $p")
+                m.forward(p)
+              case Failure(e) =>
+                log.warn(s"${e.getMessage}")
+            }
+        case Response(msg) =>
+          log.info(s"$self received $p")
+      }
+
   }
 
 }

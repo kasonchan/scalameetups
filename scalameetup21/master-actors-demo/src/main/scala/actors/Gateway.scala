@@ -1,7 +1,8 @@
 package actors
 
-import akka.actor.{Actor, Props, Terminated}
+import akka.actor.{Actor, ActorRef, Props, Terminated}
 import logger.MyLogger
+import messages.{Packet, Request, Response}
 
 /**
   * @author kasonchan
@@ -10,20 +11,23 @@ import logger.MyLogger
 class Gateway extends Actor with MyLogger {
 
   override def preStart(): Unit = {
-    val minion = context.system.actorOf(Props[BaseActor], "minion")
-    context.watch(minion)
-    log.info(s"I have been created at ${self.path.address.hostPort}")
+    log.info(s"$self prestarting...")
+    val minionR = context.system.actorOf(Props[BaseActor], "rminion")
+    context.watch(minionR)
   }
 
   override def receive: Receive = {
-    case Ping =>
-      log.info(s"$self received $Ping")
-      sender() ! Pong
-    case Pong => log.info(s"$self received $Pong")
-    case Terminated(minion) =>
-      val minion = context.system.actorOf(Props[BaseActor], "minion")
-      context.watch(minion)
-    case msg @ _ => log.info(s"$self received $msg")
+    case Terminated(minion: ActorRef) =>
+      log.warn(s"$minion is terminated")
+    case p: Packet =>
+      val minion = context.actorSelection(context.system.child("rminion"))
+      p match {
+        case Request(msg) =>
+          log.info(s"$self received $p")
+          minion ! Request(msg)
+        case Response(msg) =>
+          log.info(s"$self received $p")
+      }
   }
 
 }
