@@ -153,9 +153,11 @@ val actor = system.actorOf(Props[SampleActor]
 ## References
 
 - Akka Remoting
+  - https://doc.akka.io/docs/akka/2.5/remoting.html
   - https://doc.akka.io/docs/akka/2.5/remoting-artery.html#remote-bytebuffer-serialization
 - https://www.slideshare.net/ktoso/zen-of-akka
 - Akka Cookbook
+- Reactive Messaging Patterns with the Actor Model
 
 ---
 
