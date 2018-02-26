@@ -1,4 +1,4 @@
-# Akka Streams Graphs
+# Akka Streams StreamRefs | Akka Remoting
 
 ---
 
@@ -11,8 +11,21 @@ using the Scala REPL.
 
 ## Agenda
 
-- Akka Remoting
 - Akka Streams
+  - StreamRefs
+- Akka Remoting
+
+---
+
+## Asynchronous Processing Toolbox
+
+- Check out [Understanding Akka Streams, Back Pressure, and Asynchronous 
+  Architectures](https://www.slideshare.net/Lightbend/understanding-akka-streams-back-pressure-and-asynchronous-architectures) 
+  Slides 31-37
+
+---
+
+## Akka Streams StreamRefs
 
 ---
 
@@ -24,7 +37,7 @@ using the Scala REPL.
 - Add the following to your build file `build.sbt`
 
 ```
-"com.typesafe.akka" %% "akka-remote" % "akka.version"
+libraryDependencies += "com.typesafe.akka" %% "akka-remote" % "akka.version"
 ```
 
 ---
@@ -55,7 +68,7 @@ akka {
 
 - `akka.actor.provider` as `remote`
 - `hostname` is the machine that you run the actor system on, it can be 
-  reachable IP address or reachable hostname, i.e. 'localhost'
+  reachable IP address or reachable hostname, i.e. `localhost`
 - `port` is specific port that the actor system will listen on, by default is `2552`
   - Set to `0` to have it chosen automatically
 
@@ -72,7 +85,7 @@ akka {
   
 ---
 
-## Akka Remoting - Creation
+## Akka Remoting - Conf Creation
 
 - Specify the remote actor at `src/main/resources/application.conf`
   - By default, the `ActorSystem` read overriden configurations from this file
@@ -93,6 +106,8 @@ akka {
   automatically until we create it an actor by the same deployment name
 
 ```
+import akka.actor.Props
+
 val actor = system.actorOf(Props[SampleActor], "sampleActor")
 ```
 
@@ -108,6 +123,29 @@ val actor = system.actorOf(Props[SampleActor], "sampleActor")
 ```
 val selection =
   context.actorSelection("akka.tcp://actorSystemName@10.0.0.1:2552/user/actorName")
+```
+
+---
+
+## Akka Remoting - Programmatically Creation
+
+- Create address for actor, the following addresses have the same semantic
+
+```
+import akka.actor.{Address, AddressFromURIString}
+
+val address = AddressFromURIString("akka.tcp://sys@host:1234")
+val address = Address("akka.tcp", "sys", "host", 1234)
+```
+
+- Create an actor using the address
+
+```
+import akka.actor.{Props, Deploy}
+import akka.remote.RemoteScope
+
+val actor = system.actorOf(Props[SampleActor]
+	.withDeploy(Deploy(scope = RemoteScope(address))))
 ```
 
 ---

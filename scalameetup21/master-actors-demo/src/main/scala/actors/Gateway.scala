@@ -1,6 +1,15 @@
 package actors
 
-import akka.actor.{Actor, ActorRef, Props, Terminated}
+import akka.actor.{
+  Actor,
+  ActorRef,
+  AddressFromURIString,
+  Deploy,
+  Kill,
+  Props,
+  Terminated
+}
+import akka.remote.RemoteScope
 import logger.MyLogger
 import messages.{Packet, Request, Response}
 
@@ -17,6 +26,15 @@ class Gateway extends Actor with MyLogger {
   }
 
   override def receive: Receive = {
+    case n: Int =>
+      val address = AddressFromURIString(
+        "akka.tcp://minionsystem@127.0.0.1:2553")
+      val minion = context.system.actorOf(
+        Props[BaseActor].withDeploy(Deploy(scope = RemoteScope(address))),
+        s"minion$n")
+      context.watch(minion)
+      minion ! n
+      minion ! Kill
     case Terminated(minion: ActorRef) =>
       log.warn(s"$minion is terminated")
     case p: Packet =>

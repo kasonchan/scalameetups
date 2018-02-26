@@ -5,6 +5,7 @@ import messages.Request
 
 import scala.annotation.tailrec
 import scala.io.StdIn
+import scala.util.{Failure, Success, Try}
 
 /**
   * @author kasonchan
@@ -25,11 +26,22 @@ object Demo extends MyLogger {
   def io(system: ActorSystem, actor: ActorRef): Any = {
     StdIn.readLine() match {
       case "quit" | "q" =>
+        log.info("Quitting...")
         actor ! Kill
         system.terminate()
       case x =>
-        actor ! Request(x)
-        io(system, actor)
+        Try {
+          x.toInt
+        } match {
+          case Success(num) =>
+            log.info(num.toString)
+            actor ! num
+            io(system, actor)
+          case Failure(e) =>
+            log.info(x.toString)
+            actor ! Request(x)
+            io(system, actor)
+        }
     }
   }
 

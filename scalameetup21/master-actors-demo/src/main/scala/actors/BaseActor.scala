@@ -8,10 +8,6 @@ import messages.{Packet, Request, Response}
   * @author kasonchan
   * @since 2018-02
   */
-case object Ping
-
-case object Pong
-
 class BaseActor extends Actor with MyLogger {
 
   override def preStart(): Unit = {

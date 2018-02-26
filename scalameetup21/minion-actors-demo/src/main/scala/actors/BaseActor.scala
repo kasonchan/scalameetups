@@ -8,10 +8,6 @@ import messages.{Packet, Request, Response}
   * @author kasonchan
   * @since 2018-02
   */
-case object Ping
-
-case object Pong
-
 class BaseActor extends Actor with MyLogger {
 
   override def preStart(): Unit = {
@@ -19,6 +15,8 @@ class BaseActor extends Actor with MyLogger {
   }
 
   override def receive: Receive = {
+    case n: Int =>
+      log.info(s"$self received $n")
     case p: Packet =>
       p match {
         case Request(msg) =>
