@@ -6,6 +6,7 @@ import akka.actor.{
   AddressFromURIString,
   Deploy,
   Kill,
+  PoisonPill,
   Props,
   Terminated
 }
@@ -34,7 +35,7 @@ class Gateway extends Actor with MyLogger {
         s"minion$n")
       context.watch(minion)
       minion ! n
-      minion ! Kill
+      minion ! PoisonPill
     case Terminated(minion: ActorRef) =>
       log.warn(s"$minion is terminated")
     case p: Packet =>
