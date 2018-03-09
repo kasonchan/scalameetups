@@ -1,6 +1,6 @@
 package actors
 
-import akka.actor.{Actor, ActorRef}
+import akka.actor.{Actor, ActorRef, Terminated}
 import com.typesafe.config.ConfigFactory
 import logger.MyLogger
 import messages.{Packet, Request, Response}
@@ -39,7 +39,8 @@ class Gateway extends Actor with MyLogger {
         case Response(msg) =>
           log.info(s"$self received $p")
       }
-
+    case Terminated(minion: ActorRef) =>
+      log.warn(s"$minion is terminated")
   }
 
 }

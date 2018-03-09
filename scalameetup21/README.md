@@ -14,6 +14,7 @@ using the Scala REPL.
 - Akka Streams
   - StreamRefs
 - Akka Remoting
+- Akka Actor Termination
 
 ---
 
@@ -146,6 +147,36 @@ import akka.remote.RemoteScope
 
 val actor = system.actorOf(Props[SampleActor]
 	.withDeploy(Deploy(scope = RemoteScope(address))))
+```
+
+---
+
+## Akka Actor Termination
+
+- Kill an actor
+  - Actor will continue to process its current message (if any), but no 
+    additional messages will be processed and then throw 
+    `akka.actor.ActorKilledException: Kill` 
+
+```
+actorRef ! akka.actor.Kill
+```
+
+- Send an `PoisonPill` to an actor
+  - `PoisonPill` is like other normal messages queued in actor mailbox
+  - Actor will stop an actor when `PoisonPill` is processed
+
+```
+actorRef ! akka.actor.PoisonPill
+```
+
+- Stop an actor on by `context` within an actor or by actor system `system`
+  - Actor will continue to process its current message (if any), but no 
+    additional messages will be processed and then terminates
+
+```
+context.stop(self)
+system.stop(actorRef)
 ```
 
 ---
