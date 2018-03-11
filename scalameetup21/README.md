@@ -28,6 +28,13 @@ using the Scala REPL.
 
 ## Akka Streams StreamRefs
 
+- Check out [Akka Streams: Introducing StreamRefs (SourceRef, SinkRef)](https://www.youtube.com/watch?v=WaAPNSyyAWc)
+- Check out https://doc.akka.io/docs/akka/snapshot/stream/stream-refs.html 
+
+---
+
+## Akka Streams StreamRefs Demo
+
 ---
 
 ## Akka Remoting
