@@ -11,6 +11,55 @@ using the Scala REPL.
 
 ## Agenda
 
+- Akka Remoting
+- Akka Clustering
+
+---
+
+## Akka Remoting
+
+- Akka remoting enable remoting capabilities
+- Akka remoting is designed for communication in a peer-to-peer fashion 
+  and it has limitations for client-server setups
+
+---
+
+## Akka Remoting
+
+- Two ways of using remoting:
+  - Creation: used to create an actor on a remote node with 
+    `actorOf(Props(...), actorName)`
+    - The `actorName` need to match set in the configuration file 
+      if you are creating remote actors using configuration file
+    - Programmatically Creation
+      ```
+      val address = AddressFromURIString("akka.tcp://sys@host:1234")
+      val actor = system.actorOf(Props[SampleActor]
+      	.withDeploy(Deploy(scope = RemoteScope(address))))
+      ```
+  - Lookup: used to look up an actor on a remote node with `actorSelection(path)`
+
+---
+
+## Akka Cluster
+
+- Akka Cluster provides a fault-tolerant decentralized peer-to-peer based 
+  cluster membership service with no single point of failure or single point of 
+  bottleneck
+- Akka Cluster allows us to build distributed multi-nodes applications
+
+---
+
+## Terminologies
+
+- Node: A logical member of a cluster. There could be multiple nodes on a 
+physical machine. Defined by a `hostname:port:uid` tuple.
+- Cluster: A set of nodes joined together through the membership service.
+
+---
+
+## Agenda
+
 - Akka Clustering
 
 ---
