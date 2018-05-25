@@ -41,15 +41,6 @@ using the Scala REPL.
 
 ---
 
-## Akka Cluster
-
-- Akka Cluster provides a fault-tolerant decentralized peer-to-peer based 
-  cluster membership service with no single point of failure or single point of 
-  bottleneck
-- Akka Cluster allows us to build distributed multi-nodes applications
-
----
-
 ## Terminologies
 
 - Node: A logical member of a cluster. There could be multiple nodes on a 
@@ -58,16 +49,29 @@ physical machine. Defined by a `hostname:port:uid` tuple.
 
 ---
 
-## Agenda
+## Akka Cluster
 
-- Akka Clustering
+- Akka Cluster provides a fault-tolerant decentralized peer-to-peer based 
+  cluster membership service with no single point of failure or single point of 
+  bottleneck.
+- Akka Cluster allows us to build distributed multi-nodes applications.
 
 ---
 
-## References
+## Akka Cluster
 
-- Akka Clustering
-- Akka Cookbook
+- Checkout https://doc.akka.io/docs/akka/2.5/common/cluster.html#membership-lifecycle
+
+---
+
+## Akka Cluster Singleton
+
+- Exactly one actor of a certain type running somewhere in the cluster.
+- Singleton actor always run on the oldest member.
+- To use it, include `"com.typesafe.akka" %% "akka-cluster-tools" % akkaVersion`
+  in `build.sbt`.
+- Start nodes `sbt -Dconfig.resource=application-cluster-autodown-1.conf run`,
+  `sbt -Dconfig.resource=application-cluster-autodown-1.conf run`
 
 ---
 
