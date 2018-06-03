@@ -3,10 +3,7 @@ package actor
 import akka.actor.{Actor, ActorLogging}
 import akka.cluster.Cluster
 import akka.cluster.ClusterEvent._
-
-case class Number(n: Int)
-
-case object Exit
+import msg.{Exit, ExitAll, Msg}
 
 /**
   * @author kasonchan
@@ -18,8 +15,10 @@ class ClusterListener extends Actor with ActorLogging {
 
   // Subscribes to cluster changes
   override def preStart(): Unit = {
-    cluster.subscribe(self, initialStateMode = InitialStateAsEvents,
-      classOf[MemberEvent], classOf[UnreachableMember])
+    cluster.subscribe(self,
+                      initialStateMode = InitialStateAsEvents,
+                      classOf[MemberEvent],
+                      classOf[UnreachableMember])
   }
 
   // Resubscribes when restart
@@ -31,12 +30,14 @@ class ClusterListener extends Actor with ActorLogging {
     case UnreachableMember(member) =>
       log.info("Member detected as unreachable: {}", member)
     case MemberRemoved(member, previousStatus) =>
-      log.info("Member is Removed: {} after {}",
-        member.address, previousStatus)
+      log.info("Member is Removed: {} after {}", member.address, previousStatus)
     case Exit =>
       val address = Cluster(context.system).selfAddress
       Cluster(context.system).leave(address)
+    case ExitAll =>
       context.system.terminate()
+    case Msg(text: String) =>
+      log.info("received: {}", text)
     case _: MemberEvent =>
   }
 
