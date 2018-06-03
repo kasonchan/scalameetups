@@ -36,6 +36,8 @@ These documents should be easily follow and test and try them out.
     - [Akka Streams Graphs](https://github.com/kasonchan/scalameetups/tree/master/scalameetup20)
       - [Logback](https://logback.qos.ch/)
     - [Akka Streams StreamRefs | Akka Remoting](https://github.com/kasonchan/scalameetups/tree/master/scalameetup21)
+  - Clustering
+    - [Akka Remoting and Clustering](https://github.com/kasonchan/scalameetups/tree/master/scalameetup22)
   - HTTP
     - [Build a REST API](https://github.com/kasonchan/scalameetups/tree/master/scalameetup10)
 - Miscellaneous

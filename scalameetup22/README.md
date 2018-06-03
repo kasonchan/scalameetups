@@ -1,4 +1,4 @@
-# Akka Clustering
+# Akka Remoting and Clustering
 
 ---
 
@@ -64,6 +64,10 @@ physical machine. Defined by a `hostname:port:uid` tuple.
 
 ---
 
+## Akka Cluster Demo
+
+---
+
 ## Akka Cluster Singleton
 
 - Exactly one actor of a certain type running somewhere in the cluster.
@@ -72,6 +76,13 @@ physical machine. Defined by a `hostname:port:uid` tuple.
   in `build.sbt`.
 - Start nodes `sbt -Dconfig.resource=application-cluster-autodown-1.conf run`,
   `sbt -Dconfig.resource=application-cluster-autodown-1.conf run`
+
+---
+
+## References
+
+- https://doc.akka.io/docs/akka/2.5/common/cluster.html
+- https://doc.akka.io/docs/akka/2.5.3/scala/cluster-usage.html
 
 ---
 
